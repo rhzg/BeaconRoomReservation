@@ -25,17 +25,20 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
+import iosb.fraunhofer.de.baeconroomreservation.activity.MainActivity;
+import iosb.fraunhofer.de.baeconroomreservation.activity.RoomDetailsActivity;
 import iosb.fraunhofer.de.baeconroomreservation.adapters.NearbyArrayAdapter;
 import iosb.fraunhofer.de.baeconroomreservation.entity.NearbyRooms;
+import iosb.fraunhofer.de.baeconroomreservation.entity.NerbyResponse;
 import iosb.fraunhofer.de.baeconroomreservation.rest.Communicator;
 
 public class RoomListFragment extends ListFragment implements BeaconConsumer
 {
     private static final String TAG = "BeaconsEverywhere";
     private BeaconManager beaconManager;
-    private HashMap<String, NearbyRooms> roomsHashMap;
-    NearbyArrayAdapter adapter;
-    ArrayList<NearbyRooms> nearbyRoomses;
+    private HashMap<String, NerbyResponse> roomsHashMap;
+    public static NearbyArrayAdapter adapter;
+    ArrayList<NerbyResponse> nearbyRoomses;
 
     public static RoomListFragment instanceOf()
     {
@@ -57,9 +60,10 @@ public class RoomListFragment extends ListFragment implements BeaconConsumer
     }
 
     @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        String item = (String) getListAdapter().getItem(position);
-        Toast.makeText(getActivity(), item + " selected", Toast.LENGTH_LONG).show();
+    public void onListItemClick(ListView l, View v, int position, long id)
+    {
+        Intent intent = new Intent(getApplicationContext(), RoomDetailsActivity.class);
+        startActivity(intent);
     }
 
     @Override
@@ -103,23 +107,9 @@ public class RoomListFragment extends ListFragment implements BeaconConsumer
             @Override
             public void didRangeBeaconsInRegion(Collection<Beacon> collection, Region region)
             {
-                for (Beacon beacon: collection)
-                {
-                    roomsHashMap.put(beacon.getBluetoothName(), new NearbyRooms(beacon.getDistance(), beacon.getBluetoothName()));
-                    Log.d(TAG, "NAME: " +beacon.getBluetoothName() + " ,distance: " + beacon.getDistance());
-                }
                 if(!collection.isEmpty())
                 {
-                    Communicator.nearbyPost(roomsHashMap.keySet());
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            nearbyRoomses.clear();
-                            nearbyRoomses.addAll(roomsHashMap.values());
-                            adapter.notifyDataSetChanged();
-                        }
-                    });
-
+                    Communicator.nearbyPost(collection);
                 }
                 Log.d(TAG, "Time");
             }

@@ -13,9 +13,70 @@ public class NerbyResponse
 
     private Boolean occupied;
 
-    private Date from;
+    private double distance;
 
-    private Date untill;
+    private String from;
+
+    private String untill;
 
     private String name;
+
+    public NerbyResponse(String roomID, Boolean occupied, String from, String untill, String name) {
+        this.roomID = roomID;
+        this.occupied = occupied;
+        this.from = from;
+        this.untill = untill;
+        this.name = name;
+    }
+
+    public NerbyResponse() {
+    }
+
+    public String getRoomID() {
+        return roomID;
+    }
+
+    public void setRoomID(String roomID) {
+        this.roomID = roomID;
+    }
+
+    public Boolean getOccupied() {
+        return occupied;
+    }
+
+    public void setOccupied(Boolean occupied) {
+        this.occupied = occupied;
+    }
+
+    public String getFrom() {
+        return from;
+    }
+
+    public void setFrom(String from) {
+        this.from = from;
+    }
+
+    public String getUntill() {
+        return untill;
+    }
+
+    public void setUntill(String untill) {
+        this.untill = untill;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(double distance) {
+        this.distance = distance;
+    }
 }

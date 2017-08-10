@@ -5,7 +5,7 @@
     android:padding="6dip" >
 
     <View
-        android:id="@+id/icon"
+        android:id="@+id/occupied"
         android:layout_width="12dp"
         android:layout_height="fill_parent"
         android:layout_alignParentBottom="true"
@@ -20,7 +20,7 @@
         android:layout_height="26dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_toRightOf="@id/icon"
+        android:layout_toRightOf="@id/occupied"
         android:ellipsize="marquee"
         android:maxLines="1"
         android:text="Description"
@@ -34,7 +34,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_alignWithParentIfMissing="true"
-        android:layout_toRightOf="@id/icon"
+        android:layout_toRightOf="@id/occupied"
         android:gravity="center_vertical"
         android:text="Example application"
         android:textSize="16sp" />

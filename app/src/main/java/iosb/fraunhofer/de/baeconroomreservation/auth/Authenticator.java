@@ -20,7 +20,7 @@ import iosb.fraunhofer.de.baeconroomreservation.rest.Communicator;
 
 public class Authenticator extends AbstractAccountAuthenticator
 {
-    Context mContext;
+    private Context mContext;
 
     // Simple constructor
     public Authenticator(Context context) {

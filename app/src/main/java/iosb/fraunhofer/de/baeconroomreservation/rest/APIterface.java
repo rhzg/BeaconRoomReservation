@@ -16,6 +16,6 @@ public interface APIterface
     @POST("/mobile/login")
     Call<LoginResponse> postLogin(@Body LoginRequest request);
 
-    @POST("/mobile/nerby")
-    Call<NerbyResponse> postNerby(@Body NerbyRequest request);
+    @POST("/mobile/nearby")
+    Call<List<NerbyResponse>> postNerby(@Body NerbyRequest request);
 }
