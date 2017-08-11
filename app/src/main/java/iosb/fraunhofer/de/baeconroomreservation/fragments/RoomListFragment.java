@@ -9,7 +9,6 @@ import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import org.altbeacon.beacon.Beacon;
 import org.altbeacon.beacon.BeaconConsumer;
@@ -22,13 +21,9 @@ import org.altbeacon.beacon.Region;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
 
-import iosb.fraunhofer.de.baeconroomreservation.activity.MainActivity;
 import iosb.fraunhofer.de.baeconroomreservation.activity.RoomDetailsActivity;
 import iosb.fraunhofer.de.baeconroomreservation.adapters.NearbyArrayAdapter;
-import iosb.fraunhofer.de.baeconroomreservation.entity.NearbyRooms;
 import iosb.fraunhofer.de.baeconroomreservation.entity.NerbyResponse;
 import iosb.fraunhofer.de.baeconroomreservation.rest.Communicator;
 
@@ -36,7 +31,6 @@ public class RoomListFragment extends ListFragment implements BeaconConsumer
 {
     private static final String TAG = "BeaconsEverywhere";
     private BeaconManager beaconManager;
-    private HashMap<String, NerbyResponse> roomsHashMap;
     public static NearbyArrayAdapter adapter;
     ArrayList<NerbyResponse> nearbyRoomses;
 
@@ -46,13 +40,17 @@ public class RoomListFragment extends ListFragment implements BeaconConsumer
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
+    public void onActivityCreated(Bundle savedInstanceState)
+    {
         super.onActivityCreated(savedInstanceState);
 
         beaconManager = BeaconManager.getInstanceForApplication(getActivity());
+        beaconManager.setBackgroundBetweenScanPeriod(1000L);
+        beaconManager.setBackgroundBetweenScanPeriod(31000L);
+        BeaconManager.setAndroidLScanningDisabled(true);
+        BeaconManager.setDebug(true);
         beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24"));
         beaconManager.bind(this);
-        roomsHashMap = new HashMap<> ();
         nearbyRoomses = new ArrayList<>();
 
         adapter = new NearbyArrayAdapter(getActivity(), nearbyRoomses);
@@ -80,7 +78,8 @@ public class RoomListFragment extends ListFragment implements BeaconConsumer
 
         beaconManager.addMonitorNotifier(new MonitorNotifier() {
             @Override
-            public void didEnterRegion(Region region) {
+            public void didEnterRegion(Region region)
+            {
                 try {
                     beaconManager.startRangingBeaconsInRegion(region);
                 } catch (RemoteException e) {
@@ -89,7 +88,8 @@ public class RoomListFragment extends ListFragment implements BeaconConsumer
             }
 
             @Override
-            public void didExitRegion(Region region) {
+            public void didExitRegion(Region region)
+            {
                 try {
                     beaconManager.stopMonitoringBeaconsInRegion(region);
                 } catch (RemoteException e) {
@@ -98,12 +98,11 @@ public class RoomListFragment extends ListFragment implements BeaconConsumer
             }
 
             @Override
-            public void didDetermineStateForRegion(int i, Region region) {
-
-            }
+            public void didDetermineStateForRegion(int i, Region region) {}
         });
 
-        beaconManager.addRangeNotifier(new RangeNotifier() {
+        beaconManager.addRangeNotifier(new RangeNotifier()
+        {
             @Override
             public void didRangeBeaconsInRegion(Collection<Beacon> collection, Region region)
             {
@@ -128,12 +127,14 @@ public class RoomListFragment extends ListFragment implements BeaconConsumer
     }
 
     @Override
-    public void unbindService(ServiceConnection serviceConnection) {
+    public void unbindService(ServiceConnection serviceConnection)
+    {
         getActivity().unbindService(serviceConnection);
     }
 
     @Override
-    public boolean bindService(Intent intent, ServiceConnection serviceConnection, int i) {
+    public boolean bindService(Intent intent, ServiceConnection serviceConnection, int i)
+    {
         return getActivity().bindService(intent, serviceConnection, i);
     }
 }
