@@ -48,7 +48,6 @@ public class RoomListFragment extends ListFragment implements BeaconConsumer
         beaconManager.setBackgroundBetweenScanPeriod(1000L);
         beaconManager.setBackgroundBetweenScanPeriod(31000L);
         BeaconManager.setAndroidLScanningDisabled(true);
-        BeaconManager.setDebug(true);
         beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24"));
         beaconManager.bind(this);
         nearbyRoomses = new ArrayList<>();
@@ -61,6 +60,7 @@ public class RoomListFragment extends ListFragment implements BeaconConsumer
     public void onListItemClick(ListView l, View v, int position, long id)
     {
         Intent intent = new Intent(getApplicationContext(), RoomDetailsActivity.class);
+        intent.putExtra("ROOM_ID", nearbyRoomses.get(position).getRoomID());
         startActivity(intent);
     }
 
@@ -76,7 +76,7 @@ public class RoomListFragment extends ListFragment implements BeaconConsumer
     {
         final Region region = new Region("Becons", Identifier.parse("F0018B9B-7509-4C31-A905-1A27D39C003C"), null, null);
 
-        beaconManager.addMonitorNotifier(new MonitorNotifier() {
+        beaconManager.setMonitorNotifier(new MonitorNotifier() {
             @Override
             public void didEnterRegion(Region region)
             {
@@ -101,7 +101,7 @@ public class RoomListFragment extends ListFragment implements BeaconConsumer
             public void didDetermineStateForRegion(int i, Region region) {}
         });
 
-        beaconManager.addRangeNotifier(new RangeNotifier()
+        beaconManager.setRangeNotifier(new RangeNotifier()
         {
             @Override
             public void didRangeBeaconsInRegion(Collection<Beacon> collection, Region region)
