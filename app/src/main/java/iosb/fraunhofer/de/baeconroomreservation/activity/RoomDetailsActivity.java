@@ -1,6 +1,7 @@
 package iosb.fraunhofer.de.baeconroomreservation.activity;
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.os.Build;
 import android.os.Bundle;
@@ -44,6 +45,8 @@ public class RoomDetailsActivity extends AppCompatActivity implements TimePicker
     private ArrayList<UserRepresentation> userRepresentations;
     private ArrayList<String> sendIds;
     private boolean[] checkedItems;
+    ProgressDialog progressDialog;
+
 
     public void setUserRepresentations(ArrayList<UserRepresentation> userRepresentations) {
         this.userRepresentations = userRepresentations;
@@ -60,6 +63,8 @@ public class RoomDetailsActivity extends AppCompatActivity implements TimePicker
         final String room_id = getIntent().getStringExtra("ROOM_ID");
         Communicator.userGet(this);
         sendIds = new ArrayList<>();
+
+        progressDialog = new ProgressDialog(RoomDetailsActivity.this);
 
         _startTime.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,7 +107,7 @@ public class RoomDetailsActivity extends AppCompatActivity implements TimePicker
             public void onClick(View v) {
                 Communicator.roomReservation(_startTime.getText().toString(),
                         _endTime.getText().toString(), _date.getText().toString(),
-                        room_id, _title.getText().toString(), sendIds);
+                        room_id, _title.getText().toString(), sendIds, progressDialog);
 
                 finish();
             }

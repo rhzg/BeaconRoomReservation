@@ -1,8 +1,6 @@
 package iosb.fraunhofer.de.baeconroomreservation.entity;
 
-/**
- * Created by sakovi on 14.08.2017.
- */
+
 
 public class ReservationResponse
 {
