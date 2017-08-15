@@ -1,5 +1,7 @@
 package iosb.fraunhofer.de.baeconroomreservation.rest;
 
+import android.app.Application;
+import android.app.ProgressDialog;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -164,8 +166,12 @@ public class Communicator
         return nerbyResponse;
     }
 
-    public static boolean roomReservation(String startTime, String endTime, String date, String roomId, String title, ArrayList<String> ids)
+    public static boolean roomReservation(String startTime, String endTime, String date, String roomId, String title, ArrayList<String> ids, final ProgressDialog progressDialog)
     {
+        progressDialog.setTitle("Reserving");
+        progressDialog.setMessage("Trying to reserve...");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
         final boolean[] returnValue = new boolean[1];
         ReserveRequest reserveRequest = new ReserveRequest(startTime, endTime, date, title, ids);
         Call<ReservationResponse> call = service.postReservation(roomId, reserveRequest);
@@ -176,8 +182,9 @@ public class Communicator
             {
                 if (response.code() == 200)
                 {
-                    returnValue[0] = true;
+                    returnValue[0] = response.body().isSuccess();
                 }
+                progressDialog.dismiss();
             }
 
             @Override
@@ -186,7 +193,6 @@ public class Communicator
                 Log.d(TAG, "problem");
             }
         });
-
         return returnValue[0];
     }
 
