@@ -1,6 +1,5 @@
 package iosb.fraunhofer.de.baeconroomreservation.entity;
 
-import java.util.Date;
 
 /**
  *

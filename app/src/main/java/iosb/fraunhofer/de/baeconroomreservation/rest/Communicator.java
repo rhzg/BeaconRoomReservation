@@ -3,6 +3,8 @@ package iosb.fraunhofer.de.baeconroomreservation.rest;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+
 import org.altbeacon.beacon.Beacon;
 
 import java.io.IOException;
@@ -11,13 +13,16 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
+import iosb.fraunhofer.de.baeconroomreservation.activity.RoomDetailsActivity;
 import iosb.fraunhofer.de.baeconroomreservation.auth.TokenAuthInterceptor;
 import iosb.fraunhofer.de.baeconroomreservation.entity.LoginRequest;
 import iosb.fraunhofer.de.baeconroomreservation.entity.LoginResponse;
 import iosb.fraunhofer.de.baeconroomreservation.entity.NerbyRequest;
 import iosb.fraunhofer.de.baeconroomreservation.entity.NerbyResponse;
+import iosb.fraunhofer.de.baeconroomreservation.entity.ReservationResponse;
+import iosb.fraunhofer.de.baeconroomreservation.entity.ReserveRequest;
+import iosb.fraunhofer.de.baeconroomreservation.entity.UserRepresentation;
 import iosb.fraunhofer.de.baeconroomreservation.fragments.RoomListFragment;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -38,9 +43,8 @@ public class Communicator
     public static String token;
     private static APIterface service;
     private static APIterface loginService;
-    private static boolean returnValue = false;
     //TODO IP adrress
-    private static final String SERVER_URL = "http://192.168.42.2";
+    private static final String SERVER_URL = "http://192.168.42.189";
 
     private static void initalizator()
     {
@@ -63,6 +67,7 @@ public class Communicator
         //The Retrofit builder will have the client attached, in order to get connection logs
         Retrofit retrofit = new Retrofit.Builder()
                 .client(httpClient.build())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .baseUrl(SERVER_URL)
                 .build();
@@ -101,6 +106,7 @@ public class Communicator
 
     public static boolean loginPost(String username, String password)
     {
+        boolean returnValue = false;
         if(loginService == null) {loginServiceInitalizator();}
 
         Call<LoginResponse> call = loginService.postLogin(new LoginRequest(username, password));
@@ -156,5 +162,52 @@ public class Communicator
         });
 
         return nerbyResponse;
+    }
+
+    public static boolean roomReservation(String startTime, String endTime, String date, String roomId, String title, ArrayList<String> ids)
+    {
+        final boolean[] returnValue = new boolean[1];
+        ReserveRequest reserveRequest = new ReserveRequest(startTime, endTime, date, title, ids);
+        Call<ReservationResponse> call = service.postReservation(roomId, reserveRequest);
+
+        call.enqueue(new Callback<ReservationResponse>() {
+            @Override
+            public void onResponse(Call<ReservationResponse> call, Response<ReservationResponse> response)
+            {
+                if (response.code() == 200)
+                {
+                    returnValue[0] = true;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ReservationResponse> call, Throwable t)
+            {
+                Log.d(TAG, "problem");
+            }
+        });
+
+        return returnValue[0];
+    }
+
+    public static void userGet(final RoomDetailsActivity roomDetailsActivity)
+    {
+        Call<List<UserRepresentation>> call = service.getUsers();
+
+        call.enqueue(new Callback<List<UserRepresentation>>() {
+            @Override
+            public void onResponse(Call<List<UserRepresentation>> call, Response<List<UserRepresentation>> response)
+            {
+                if (response.code() == 200)
+                {
+                    roomDetailsActivity.setUserRepresentations((ArrayList<UserRepresentation>) response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<UserRepresentation>> call, Throwable t) {
+
+            }
+        });
     }
 }
