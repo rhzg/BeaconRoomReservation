@@ -10,7 +10,7 @@
     <item
         android:id="@+id/action_calendar"
         android:enabled="true"
-        android:icon="@drawable/ic_action_name"
+        android:icon="@drawable/calendar"
         android:title="@string/text_calendar"
         app:showAsAction="ifRoom" />
     <item
@@ -18,5 +18,11 @@
         android:enabled="true"
         android:icon="@drawable/search"
         android:title="@string/text_search"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/favrites"
+        android:enabled="true"
+        android:icon="@drawable/favorite"
+        android:title="@string/favorites"
         app:showAsAction="ifRoom" />
 </menu>

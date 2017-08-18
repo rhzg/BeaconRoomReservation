@@ -45,8 +45,6 @@ public class RoomListFragment extends ListFragment implements BeaconConsumer
         super.onActivityCreated(savedInstanceState);
 
         beaconManager = BeaconManager.getInstanceForApplication(getActivity());
-//        beaconManager.setBackgroundBetweenScanPeriod(1000L);
-//        beaconManager.setBackgroundBetweenScanPeriod(31000L);
         beaconManager.setForegroundScanPeriod(2000l);
         beaconManager.setForegroundBetweenScanPeriod(0l);
         BeaconManager.setAndroidLScanningDisabled(true);

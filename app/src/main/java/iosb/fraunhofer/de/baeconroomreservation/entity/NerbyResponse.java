@@ -12,6 +12,8 @@ public class NerbyResponse
 
     private Boolean occupied;
 
+    private Boolean favorite;
+
     private double distance;
 
     private String from;
@@ -29,6 +31,14 @@ public class NerbyResponse
     }
 
     public NerbyResponse() {
+    }
+
+    public Boolean getFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(Boolean favorite) {
+        this.favorite = favorite;
     }
 
     public String getRoomID() {

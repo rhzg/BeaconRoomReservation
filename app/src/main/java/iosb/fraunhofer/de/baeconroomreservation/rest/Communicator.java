@@ -224,4 +224,26 @@ public class Communicator
             }
         });
     }
+
+    public static void makeFavorite(String roomId)
+    {
+        Call<ReservationResponse> call = service.makeFavorite(roomId);
+
+        call.enqueue(new Callback<ReservationResponse>() {
+            @Override
+            public void onResponse(Call<ReservationResponse> call, Response<ReservationResponse> response)
+            {
+                if (response.code() == 200)
+                {
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ReservationResponse> call, Throwable t)
+            {
+                Log.d(TAG, "Favorite");
+            }
+        });
+    }
 }

@@ -30,4 +30,6 @@ public interface APIterface
     @GET("/mobile/users")
     Call<List<UserRepresentation>> getUsers();
 
+    @GET("/mobile/room/favorite/{id}")
+    Call<ReservationResponse> makeFavorite(@Path("id")String roomId);
 }
