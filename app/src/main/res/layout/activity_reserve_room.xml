@@ -75,7 +75,7 @@
         android:id="@+id/date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="1.8.9"
+        android:text="1.8.2017"
         android:textAlignment="center"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:layout_below="@+id/dateLabel"
@@ -93,6 +93,8 @@
     <EditText
         android:id="@+id/title"
         android:layout_width="match_parent"
+        android:inputType="text"
+        android:maxLines="1"
         android:layout_height="wrap_content"
         android:hint="@string/new_mitting"
         android:textAlignment="center"

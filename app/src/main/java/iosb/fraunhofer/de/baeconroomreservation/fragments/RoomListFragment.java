@@ -45,8 +45,10 @@ public class RoomListFragment extends ListFragment implements BeaconConsumer
         super.onActivityCreated(savedInstanceState);
 
         beaconManager = BeaconManager.getInstanceForApplication(getActivity());
-        beaconManager.setBackgroundBetweenScanPeriod(1000L);
-        beaconManager.setBackgroundBetweenScanPeriod(31000L);
+//        beaconManager.setBackgroundBetweenScanPeriod(1000L);
+//        beaconManager.setBackgroundBetweenScanPeriod(31000L);
+        beaconManager.setForegroundScanPeriod(2000l);
+        beaconManager.setForegroundBetweenScanPeriod(0l);
         BeaconManager.setAndroidLScanningDisabled(true);
         beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24"));
         beaconManager.bind(this);
@@ -61,6 +63,7 @@ public class RoomListFragment extends ListFragment implements BeaconConsumer
     {
         Intent intent = new Intent(getApplicationContext(), RoomDetailsActivity.class);
         intent.putExtra("ROOM_ID", nearbyRoomses.get(position).getRoomID());
+        intent.putExtra("ROOM_NAME", nearbyRoomses.get(position).getName());
         startActivity(intent);
     }
 

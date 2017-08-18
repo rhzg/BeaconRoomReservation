@@ -1,9 +1,12 @@
 package iosb.fraunhofer.de.baeconroomreservation.rest;
 
-import android.app.Application;
+import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
@@ -16,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import iosb.fraunhofer.de.baeconroomreservation.activity.LoginActivity;
 import iosb.fraunhofer.de.baeconroomreservation.activity.RoomDetailsActivity;
 import iosb.fraunhofer.de.baeconroomreservation.auth.TokenAuthInterceptor;
 import iosb.fraunhofer.de.baeconroomreservation.entity.LoginRequest;
@@ -46,7 +50,7 @@ public class Communicator
     private static APIterface service;
     private static APIterface loginService;
     //TODO IP adrress
-    private static final String SERVER_URL = "http://192.168.42.189";
+    private static final String SERVER_URL = "http://192.168.42.220";
 
     private static void initalizator()
     {
@@ -166,13 +170,15 @@ public class Communicator
         return nerbyResponse;
     }
 
-    public static boolean roomReservation(String startTime, String endTime, String date, String roomId, String title, ArrayList<String> ids, final ProgressDialog progressDialog)
+    public static void roomReservation(String startTime, String endTime, String date, String roomId, String title,
+                                          ArrayList<String> ids, final Activity activity)
     {
+        final ProgressDialog progressDialog = new ProgressDialog(activity);
         progressDialog.setTitle("Reserving");
         progressDialog.setMessage("Trying to reserve...");
         progressDialog.setCancelable(false);
         progressDialog.show();
-        final boolean[] returnValue = new boolean[1];
+
         ReserveRequest reserveRequest = new ReserveRequest(startTime, endTime, date, title, ids);
         Call<ReservationResponse> call = service.postReservation(roomId, reserveRequest);
 
@@ -182,9 +188,11 @@ public class Communicator
             {
                 if (response.code() == 200)
                 {
-                    returnValue[0] = response.body().isSuccess();
+                    progressDialog.dismiss();
+                    Toast.makeText(activity, "Reservation was success: "+response.body().isSuccess(),
+                            Toast.LENGTH_SHORT).show();
+                    activity.finish();
                 }
-                progressDialog.dismiss();
             }
 
             @Override
@@ -193,7 +201,7 @@ public class Communicator
                 Log.d(TAG, "problem");
             }
         });
-        return returnValue[0];
+
     }
 
     public static void userGet(final RoomDetailsActivity roomDetailsActivity)

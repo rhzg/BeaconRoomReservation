@@ -12,9 +12,11 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,7 +47,6 @@ public class RoomDetailsActivity extends AppCompatActivity implements TimePicker
     private ArrayList<UserRepresentation> userRepresentations;
     private ArrayList<String> sendIds;
     private boolean[] checkedItems;
-    ProgressDialog progressDialog;
 
 
     public void setUserRepresentations(ArrayList<UserRepresentation> userRepresentations) {
@@ -57,14 +58,20 @@ public class RoomDetailsActivity extends AppCompatActivity implements TimePicker
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_reserve_room);
-        ButterKnife.bind(this);
         final String room_id = getIntent().getStringExtra("ROOM_ID");
+        getSupportActionBar().setTitle(getIntent().getStringExtra("ROOM_NAME"));
+        ButterKnife.bind(this);
+
         Communicator.userGet(this);
+
         sendIds = new ArrayList<>();
 
-        progressDialog = new ProgressDialog(RoomDetailsActivity.this);
+        initFields();
+        _date.setShowSoftInputOnFocus(false);
+        _users.setShowSoftInputOnFocus(false);
+        _startTime.setShowSoftInputOnFocus(false);
+        _endTime.setShowSoftInputOnFocus(false);
 
         _startTime.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,19 +112,37 @@ public class RoomDetailsActivity extends AppCompatActivity implements TimePicker
         _reserv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Communicator.roomReservation(_startTime.getText().toString(),
-                        _endTime.getText().toString(), _date.getText().toString(),
-                        room_id, _title.getText().toString(), sendIds, progressDialog);
 
-                finish();
+                if(validateInput())
+                {
+                    Communicator.roomReservation(_startTime.getText().toString(),
+                            _endTime.getText().toString(), _date.getText().toString(),
+                            room_id, _title.getText().toString(), sendIds, RoomDetailsActivity.this);
+                }else
+                {
+                    Toast.makeText(RoomDetailsActivity.this, "Invalid input", Toast.LENGTH_SHORT).show();
+                }
+
+
             }
         });
+    }
 
+    public boolean validateInput()
+    {
+        String[] startTimeSeparate = _startTime.getText().toString().split(":");
+        int hourS = Integer.parseInt(startTimeSeparate[0]);
+        int minuteS = Integer.parseInt(startTimeSeparate[1]);
 
-        _date.setShowSoftInputOnFocus(false);
-        _users.setShowSoftInputOnFocus(false);
-        _startTime.setShowSoftInputOnFocus(false);
-        _endTime.setShowSoftInputOnFocus(false);
+        String[] endTimeSeparate = _endTime.getText().toString().split(":");
+        int hourE = Integer.parseInt(endTimeSeparate[0]);
+        int minuteE = Integer.parseInt(endTimeSeparate[1]);
+
+        if(hourS*60+minuteS >= hourE*60+minuteE)
+        {
+            return false;
+        }
+        return true;
     }
 
     @Override
@@ -125,17 +150,33 @@ public class RoomDetailsActivity extends AppCompatActivity implements TimePicker
     {
         if(start)
         {
-            _startTime.setText(hourOfDay+":"+minute);
+            _startTime.setText(String.format("%02d", hourOfDay)+":"+String.format("%02d", minute));
         }
         else
         {
-            _endTime.setText(hourOfDay+":"+minute);
+            _endTime.setText(String.format("%" +
+                    "02d", hourOfDay)+":"+String.format("%02d", minute));
         }
     }
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth)
     {
+        _date.setText(dayOfMonth+"."+(month+1)+"."+year);
+    }
+
+    public void initFields()
+    {
+        final Calendar c = Calendar.getInstance();
+        int hour = c.get(Calendar.HOUR_OF_DAY);
+        int minute = c.get(Calendar.MINUTE);
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH);
+        int dayOfMonth = c.get(Calendar.DAY_OF_MONTH);
+
+        _endTime.setText(String.format("%" +
+                "02d", hour)+":"+String.format("%02d", minute));
+        _startTime.setText(String.format("%02d", hour)+":"+String.format("%02d", minute));
         _date.setText(dayOfMonth+"."+(month+1)+"."+year);
     }
 

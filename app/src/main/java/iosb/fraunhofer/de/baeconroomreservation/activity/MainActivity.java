@@ -5,7 +5,6 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.accounts.AccountManagerFuture;
 import android.accounts.AuthenticatorException;
-import android.accounts.NetworkErrorException;
 import android.accounts.OperationCanceledException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -16,7 +15,6 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 
@@ -27,7 +25,7 @@ import iosb.fraunhofer.de.baeconroomreservation.fragments.CalendarFragment;
 import iosb.fraunhofer.de.baeconroomreservation.fragments.RoomListFragment;
 import iosb.fraunhofer.de.baeconroomreservation.rest.Communicator;
 
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends BaseActivity
 {
     private static final String TAG = "MainActivity";
     private static final int PERMISSIONS_REQUEST_CODE = 1111;
@@ -58,11 +56,6 @@ public class MainActivity extends AppCompatActivity
                     try {
                         Bundle b = response.getResult();
                         Communicator.token = b.getString(AccountManager.KEY_AUTHTOKEN);
-                        getSupportFragmentManager()
-                                .beginTransaction()
-                                .replace(R.id.root_layout, RoomListFragment.instanceOf())
-                                .addToBackStack(null)
-                                .commit();
                         return true;
                     } catch (AuthenticatorException | IOException | OperationCanceledException e) {
                         e.printStackTrace();
@@ -82,6 +75,11 @@ public class MainActivity extends AppCompatActivity
                 if(start)
                 {
                     setNavigationListener();
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.root_layout, RoomListFragment.instanceOf())
+                            .addToBackStack(null)
+                            .commit();
                 }
             }
         };
@@ -93,6 +91,11 @@ public class MainActivity extends AppCompatActivity
         bottomNavigationView = (BottomNavigationView)
                 findViewById(R.id.bottom_navigation);
 
+    }
+
+    @Override
+    protected int getNavigationDrawerID() {
+        return R.id.nav_example;
     }
 
     private void setNavigationListener()
