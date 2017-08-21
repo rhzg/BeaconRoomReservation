@@ -77,7 +77,7 @@ public class MainActivity extends BaseActivity
                     setNavigationListener();
                     getSupportFragmentManager()
                             .beginTransaction()
-                            .replace(R.id.root_layout, RoomListFragment.instanceOf())
+                            .replace(R.id.root_layout, RoomListFragment.instanceOf(false))
                             .addToBackStack(null)
                             .commit();
                 }
@@ -112,8 +112,11 @@ public class MainActivity extends BaseActivity
                             case R.id.action_search:
                                 fragment = CalendarFragment.instanceOf();
                                 break;
+                            case R.id.action_favorite:
+                                fragment = RoomListFragment.instanceOf(true);
+                                break;
                             default:
-                                fragment = RoomListFragment.instanceOf();
+                                fragment = RoomListFragment.instanceOf(false);
                         }
                         switchToFragment(fragment);
                         return true;

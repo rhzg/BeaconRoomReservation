@@ -2,8 +2,6 @@ package iosb.fraunhofer.de.baeconroomreservation.rest;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Intent;
-import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
@@ -19,7 +17,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import iosb.fraunhofer.de.baeconroomreservation.activity.LoginActivity;
 import iosb.fraunhofer.de.baeconroomreservation.activity.RoomDetailsActivity;
 import iosb.fraunhofer.de.baeconroomreservation.auth.TokenAuthInterceptor;
 import iosb.fraunhofer.de.baeconroomreservation.entity.LoginRequest;
@@ -50,7 +47,7 @@ public class Communicator
     private static APIterface service;
     private static APIterface loginService;
     //TODO IP adrress
-    private static final String SERVER_URL = "http://192.168.42.220";
+    private static final String SERVER_URL = "http://192.168.42.189";
 
     private static void initalizator()
     {
@@ -243,6 +240,48 @@ public class Communicator
             public void onFailure(Call<ReservationResponse> call, Throwable t)
             {
                 Log.d(TAG, "Favorite");
+            }
+        });
+    }
+
+    public static void favorites(Collection<Beacon> becons)
+    {
+        if(service == null) {initalizator();}
+
+        ArrayList<String> idList = new ArrayList<>();
+        final List<NerbyResponse> nerbyResponse = new ArrayList<>();
+        final Map<String, Beacon> beaconMap = new HashMap<>();
+
+        for(Beacon beacon:becons)
+        {
+            beaconMap.put(beacon.getBluetoothName(), beacon);
+            idList.add(beacon.getBluetoothName());
+        }
+        Call<List<NerbyResponse>> call = service.getFavorite();
+
+        call.enqueue(new Callback<List<NerbyResponse>>() {
+            @Override
+            public void onResponse(Call<List<NerbyResponse>> call, Response<List<NerbyResponse>> response)
+            {
+                if (response.code() == 200)
+                {
+                    nerbyResponse.addAll(response.body());
+                    for(NerbyResponse response1: nerbyResponse)
+                    {
+
+                        Beacon beacon = beaconMap.get(response1.getRoomID());
+                        if(beacon != null)
+                        {
+                            response1.setDistance(beacon.getDistance());
+                        }
+                    }
+                    RoomListFragment.adapter.setList((ArrayList<NerbyResponse>) nerbyResponse);
+                }
+            }
+            @Override
+            public void onFailure(Call<List<NerbyResponse>> call, Throwable t)
+            {
+                Log.d(TAG, "problem");
             }
         });
     }

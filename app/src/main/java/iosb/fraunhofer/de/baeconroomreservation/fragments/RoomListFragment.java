@@ -30,20 +30,25 @@ import iosb.fraunhofer.de.baeconroomreservation.rest.Communicator;
 public class RoomListFragment extends ListFragment implements BeaconConsumer
 {
     private static final String TAG = "BeaconsEverywhere";
-    private BeaconManager beaconManager;
+    BeaconManager beaconManager;
     public static NearbyArrayAdapter adapter;
     ArrayList<NerbyResponse> nearbyRoomses;
+    private boolean favorites;
 
-    public static RoomListFragment instanceOf()
+    public static RoomListFragment instanceOf(boolean favorites)
     {
-        return new RoomListFragment();
+        Bundle args = new Bundle();
+        RoomListFragment frag = new RoomListFragment();
+        args.putBoolean("favorites", favorites);
+        frag.setArguments(args);
+        return frag;
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState)
     {
         super.onActivityCreated(savedInstanceState);
-
+        favorites = getArguments().getBoolean("favorites");
         beaconManager = BeaconManager.getInstanceForApplication(getActivity());
         beaconManager.setForegroundScanPeriod(2000l);
         beaconManager.setForegroundBetweenScanPeriod(0l);
@@ -65,12 +70,28 @@ public class RoomListFragment extends ListFragment implements BeaconConsumer
         startActivity(intent);
     }
 
+
     @Override
     public void onDestroy()
     {
         super.onDestroy();
         beaconManager.unbind(this);
     }
+
+    @Override
+    public void onStop()
+    {
+        super.onStop();
+        beaconManager.unbind(this);
+    }
+
+    @Override
+    public void onStart()
+    {
+        super.onStart();
+        beaconManager.bind(this);
+    }
+
 
     @Override
     public void onBeaconServiceConnect()
@@ -109,7 +130,13 @@ public class RoomListFragment extends ListFragment implements BeaconConsumer
             {
                 if(!collection.isEmpty())
                 {
-                    Communicator.nearbyPost(collection);
+                    if(favorites)
+                    {
+                        Communicator.favorites(collection);
+                    } else
+                        {
+                        Communicator.nearbyPost(collection);
+                    }
                 }
                 Log.d(TAG, "Time");
             }

@@ -32,4 +32,7 @@ public interface APIterface
 
     @GET("/mobile/room/favorite/{id}")
     Call<ReservationResponse> makeFavorite(@Path("id")String roomId);
+
+    @GET("/mobile/favorites")
+    Call<List<NerbyResponse>> getFavorite();
 }

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import iosb.fraunhofer.de.baeconroomreservation.R;
 import iosb.fraunhofer.de.baeconroomreservation.entity.NerbyResponse;
@@ -27,6 +28,7 @@ public class NearbyArrayAdapter extends ArrayAdapter
 {
     private final Context context;
     private ArrayList<NerbyResponse> values;
+    static final long HALF_HOURE = 1_800_000;
 
     public NearbyArrayAdapter(Context context, ArrayList<NerbyResponse> values) {
         super(context, -1, values);
@@ -46,8 +48,23 @@ public class NearbyArrayAdapter extends ArrayAdapter
         TextView textView = (TextView) rowView.findViewById(R.id.firstLine);
         textView.setText(values.get(position).getName());
 
+        TextView dateStart = (TextView) rowView.findViewById(R.id.dateStart);
+        dateStart.setText("From:    " + new Date(Long.parseLong(values.get(position).getFrom())));
+
+        Date dateEnd = new Date(Long.parseLong(values.get(position).getUntill()));
+
+        TextView dateEndTxt = (TextView) rowView.findViewById(R.id.dateEnd);
+        dateEndTxt.setText("Until:    " + new Date(Long.parseLong(values.get(position).getUntill())));
+
         TextView textView1 = (TextView) rowView.findViewById(R.id.secondLine);
-        textView1.setText("Distance:    " + values.get(position).getDistance() + " m");
+        if(values.get(position).getDistance() != 0.0d)
+        {
+            textView1.setText("Distance:    " + values.get(position).getDistance() + " m");
+        }
+        else
+        {
+            textView1.setText(R.string.notInRange);
+        }
 
         ImageView star = (ImageView) rowView.findViewById(R.id.favoriteStar);
         star.setOnClickListener(new View.OnClickListener() {
@@ -69,7 +86,16 @@ public class NearbyArrayAdapter extends ArrayAdapter
         View view = rowView.findViewById(R.id.occupied);
         if (values.get(position).getOccupied())
         {
-            view.setBackgroundColor((ContextCompat.getColor(getContext(), R.color.red_500)));
+            Calendar date = Calendar.getInstance();
+            long t = date.getTimeInMillis();
+            Date half = new Date(t + HALF_HOURE);
+            if(dateEnd.after(half))
+            {
+                view.setBackgroundColor((ContextCompat.getColor(getContext(), R.color.red_500)));
+            }
+            else {
+                view.setBackgroundColor((ContextCompat.getColor(getContext(), R.color.yellow_700)));
+            }
         }
         //TODO add ocuupied
         return rowView;

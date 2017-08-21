@@ -20,7 +20,7 @@
         android:title="@string/text_search"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/favrites"
+        android:id="@+id/action_favorite"
         android:enabled="true"
         android:icon="@drawable/favorite"
         android:title="@string/favorites"
