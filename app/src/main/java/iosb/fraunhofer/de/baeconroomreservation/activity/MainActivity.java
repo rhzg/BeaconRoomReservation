@@ -56,6 +56,7 @@ public class MainActivity extends BaseActivity
                     try {
                         Bundle b = response.getResult();
                         Communicator.token = b.getString(AccountManager.KEY_AUTHTOKEN);
+                        Communicator.setContext(getApplicationContext());
                         return true;
                     } catch (AuthenticatorException | IOException | OperationCanceledException e) {
                         e.printStackTrace();

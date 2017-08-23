@@ -96,7 +96,8 @@ public class RoomListFragment extends ListFragment implements BeaconConsumer
     @Override
     public void onBeaconServiceConnect()
     {
-        final Region region = new Region("Becons", Identifier.parse("F0018B9B-7509-4C31-A905-1A27D39C003C"), null, null);
+//        final Region region = new Region("Becons", Identifier.parse("F0018B9B-7509-4C31-A905-1A27D39C003C"), null, null);
+        final Region region = new Region("Becons", null, null, null);
 
         beaconManager.setMonitorNotifier(new MonitorNotifier() {
             @Override

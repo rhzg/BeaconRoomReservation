@@ -48,14 +48,6 @@ public class NearbyArrayAdapter extends ArrayAdapter
         TextView textView = (TextView) rowView.findViewById(R.id.firstLine);
         textView.setText(values.get(position).getName());
 
-        TextView dateStart = (TextView) rowView.findViewById(R.id.dateStart);
-        dateStart.setText("From:    " + new Date(Long.parseLong(values.get(position).getFrom())));
-
-        Date dateEnd = new Date(Long.parseLong(values.get(position).getUntill()));
-
-        TextView dateEndTxt = (TextView) rowView.findViewById(R.id.dateEnd);
-        dateEndTxt.setText("Until:    " + new Date(Long.parseLong(values.get(position).getUntill())));
-
         TextView textView1 = (TextView) rowView.findViewById(R.id.secondLine);
         if(values.get(position).getDistance() != 0.0d)
         {
@@ -83,6 +75,13 @@ public class NearbyArrayAdapter extends ArrayAdapter
             star.setImageResource(R.drawable.star_off);
         }
 
+        TextView dateStart = (TextView) rowView.findViewById(R.id.dateStart);
+
+        Date dateEnd = new Date(Long.parseLong(values.get(position).getUntill()));
+
+        TextView dateEndTxt = (TextView) rowView.findViewById(R.id.dateEnd);
+        dateEndTxt.setText("Until:    " + new Date(Long.parseLong(values.get(position).getUntill())));
+
         View view = rowView.findViewById(R.id.occupied);
         if (values.get(position).getOccupied())
         {
@@ -96,6 +95,13 @@ public class NearbyArrayAdapter extends ArrayAdapter
             else {
                 view.setBackgroundColor((ContextCompat.getColor(getContext(), R.color.yellow_700)));
             }
+            dateStart.setText("From:    " + new Date(Long.parseLong(values.get(position).getFrom())));
+            dateEndTxt.setText("Until:    " + new Date(Long.parseLong(values.get(position).getUntill())));
+        }
+        else
+        {
+            dateStart.setText("Available");
+            dateEndTxt.setText("Until:    " + new Date(Long.parseLong(values.get(position).getFrom())));
         }
         //TODO add ocuupied
         return rowView;

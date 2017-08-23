@@ -1,6 +1,8 @@
 package iosb.fraunhofer.de.baeconroomreservation.rest;
 
 
+import com.alamkanak.weekview.WeekViewEvent;
+
 import java.util.List;
 
 import iosb.fraunhofer.de.baeconroomreservation.entity.LoginRequest;
@@ -9,6 +11,7 @@ import iosb.fraunhofer.de.baeconroomreservation.entity.NerbyRequest;
 import iosb.fraunhofer.de.baeconroomreservation.entity.NerbyResponse;
 import iosb.fraunhofer.de.baeconroomreservation.entity.ReservationResponse;
 import iosb.fraunhofer.de.baeconroomreservation.entity.ReserveRequest;
+import iosb.fraunhofer.de.baeconroomreservation.entity.Term;
 import iosb.fraunhofer.de.baeconroomreservation.entity.UserRepresentation;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -35,4 +38,7 @@ public interface APIterface
 
     @GET("/mobile/favorites")
     Call<List<NerbyResponse>> getFavorite();
+
+    @GET("/mobile/favorites/terms")
+    Call<List<Term>> getFavoritesTerms();
 }

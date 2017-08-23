@@ -1,7 +1,10 @@
 package iosb.fraunhofer.de.baeconroomreservation.rest;
 
+import android.accounts.AccountManager;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
@@ -17,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import iosb.fraunhofer.de.baeconroomreservation.activity.LoginActivity;
 import iosb.fraunhofer.de.baeconroomreservation.activity.RoomDetailsActivity;
 import iosb.fraunhofer.de.baeconroomreservation.auth.TokenAuthInterceptor;
 import iosb.fraunhofer.de.baeconroomreservation.entity.LoginRequest;
@@ -25,7 +29,9 @@ import iosb.fraunhofer.de.baeconroomreservation.entity.NerbyRequest;
 import iosb.fraunhofer.de.baeconroomreservation.entity.NerbyResponse;
 import iosb.fraunhofer.de.baeconroomreservation.entity.ReservationResponse;
 import iosb.fraunhofer.de.baeconroomreservation.entity.ReserveRequest;
+import iosb.fraunhofer.de.baeconroomreservation.entity.Term;
 import iosb.fraunhofer.de.baeconroomreservation.entity.UserRepresentation;
+import iosb.fraunhofer.de.baeconroomreservation.fragments.CalendarFragment;
 import iosb.fraunhofer.de.baeconroomreservation.fragments.RoomListFragment;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -45,19 +51,19 @@ public class Communicator
     private static final String TAG = "Communicator";
     public static String token;
     private static APIterface service;
+    private static Context context = null;
+    private static final String AUTH_TOKEN_TYPE = "iosb.fraunhofer.de.baeconroomreservation";
+
+
     private static APIterface loginService;
     //TODO IP adrress
-    private static final String SERVER_URL = "http://192.168.42.189";
+    private static final String SERVER_URL = "http://192.168.42.176";
 
     private static void initalizator()
     {
-        //Here a logging interceptor is created
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
 
-
-
-        //The logging interceptor will be added to the http client
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         httpClient.addInterceptor(logging);
 
@@ -67,7 +73,6 @@ public class Communicator
                 httpClient.addInterceptor(interceptor);
         }
 
-        //The Retrofit builder will have the client attached, in order to get connection logs
         Retrofit retrofit = new Retrofit.Builder()
                 .client(httpClient.build())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -156,6 +161,10 @@ public class Communicator
                     }
                     RoomListFragment.adapter.setList((ArrayList<NerbyResponse>) nerbyResponse);
                 }
+                else if(response.code() == 403)
+                {
+                    goToLogin();
+                }
             }
             @Override
             public void onFailure(Call<List<NerbyResponse>> call, Throwable t)
@@ -190,6 +199,10 @@ public class Communicator
                             Toast.LENGTH_SHORT).show();
                     activity.finish();
                 }
+                else if(response.code() == 403)
+                {
+                    goToLogin();
+                }
             }
 
             @Override
@@ -213,6 +226,10 @@ public class Communicator
                 {
                     roomDetailsActivity.setUserRepresentations((ArrayList<UserRepresentation>) response.body());
                 }
+                else if(response.code() == 403)
+                {
+                    goToLogin();
+                }
             }
 
             @Override
@@ -233,6 +250,10 @@ public class Communicator
                 if (response.code() == 200)
                 {
 
+                }
+                else if(response.code() == 403)
+                {
+                    goToLogin();
                 }
             }
 
@@ -277,6 +298,10 @@ public class Communicator
                     }
                     RoomListFragment.adapter.setList((ArrayList<NerbyResponse>) nerbyResponse);
                 }
+                else if(response.code() == 403)
+                {
+                    goToLogin();
+                }
             }
             @Override
             public void onFailure(Call<List<NerbyResponse>> call, Throwable t)
@@ -284,5 +309,40 @@ public class Communicator
                 Log.d(TAG, "problem");
             }
         });
+    }
+
+    public static void getfavoritesTerms(final CalendarFragment fragment)
+    {
+        Call<List<Term>> call = service.getFavoritesTerms();
+
+        call.enqueue(new Callback<List<Term>>() {
+            @Override
+            public void onResponse(Call<List<Term>> call, Response<List<Term>> response)
+            {
+                if (response.code() == 200)
+                {
+                    fragment.setTerms(response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Term>> call, Throwable t)
+            {
+
+            }
+        });
+    }
+
+    public static void goToLogin()
+    {
+        Toast.makeText(context, "Token expired",
+                Toast.LENGTH_SHORT).show();
+        AccountManager.get(context).invalidateAuthToken(AUTH_TOKEN_TYPE, token);
+//        Intent intent = new Intent(context, LoginActivity.class);
+//        context.startActivity(intent);
+    }
+
+    public static void setContext(Context context) {
+        Communicator.context = context;
     }
 }
