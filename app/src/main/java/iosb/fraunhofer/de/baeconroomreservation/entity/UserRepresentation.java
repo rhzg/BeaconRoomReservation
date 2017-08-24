@@ -1,11 +1,13 @@
 package iosb.fraunhofer.de.baeconroomreservation.entity;
 
+import java.io.Serializable;
+
 /**
  *
  * Created by sakovi on 15.08.2017.
  */
 
-public class UserRepresentation
+public class UserRepresentation implements Serializable
 {
     private String name;
 

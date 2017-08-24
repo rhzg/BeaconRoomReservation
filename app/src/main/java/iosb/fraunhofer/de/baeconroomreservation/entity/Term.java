@@ -1,43 +1,50 @@
 package iosb.fraunhofer.de.baeconroomreservation.entity;
 
+import java.io.Serializable;
+import java.util.Date;
+
 /**
  *
  * Created by sakovi on 23.08.2017.
  */
 
-public class Term
+public class Term implements Serializable
 {
-    private String startDate;
+    Date startDate;
 
-    private String endDate;
+    Date endDate;
 
-    private String location;
+    String location;
 
-    private String description;
+    String description;
+
+    private String roomId;
 
     public Term() {
     }
 
-    public Term(String startDate, String endDate, String location, String description) {
+    public Term(Date startDate, Date endDate, String location, String description, String roomId) {
         this.startDate = startDate;
         this.endDate = endDate;
         this.location = location;
         this.description = description;
+        this.roomId = roomId;
     }
 
-    public String getStartDate() {
+
+    public Date getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(String startDate) {
+    public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
 
-    public String getEndDate() {
+    public Date getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(String endDate) {
+    public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
 
@@ -55,5 +62,13 @@ public class Term
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getRoomId() {
+        return roomId;
+    }
+
+    public void setRoomId(String roomId) {
+        this.roomId = roomId;
     }
 }

@@ -296,4 +296,26 @@
     <color name="colorPrimary">#199C7D</color>
     <color name="colorPrimaryDark">#199C7D</color>
     <color name="colorAccent">#199C7D</color>
+
+    <array name="calendarColors">
+        <item name="md_red_500">#F44336</item>
+        <item name="md_pink_500">#E91E63</item>
+        <item name="md_purple_500">#9C27B0</item>
+        <item name="md_deep_purple_500">#673AB7</item>
+        <item name="md_indigo_500">#3F51B5</item>
+        <item name="md_blue_500">#2196F3</item>
+        <item name="md_light_blue_500">#03A9F4</item>
+        <item name="md_cyan_500">#00BCD4</item>
+        <item name="md_teal_500">#009688</item>
+        <item name="md_green_500">#4CAF50</item>
+        <item name="md_light_green_500">#8BC34A</item>
+        <item name="md_lime_500">#CDDC39</item>
+        <item name="md_yellow_500">#FFEB3B</item>
+        <item name="md_amber_500">#FFC107</item>
+        <item name="md_orange_500">#FF9800</item>
+        <item name="md_deep_orange_500">#FF5722</item>
+        <item name="md_grey_500">#9E9E9E</item>
+        <item name="md_blue_grey_500">#607D8B</item>
+    </array>
+
 </resources>

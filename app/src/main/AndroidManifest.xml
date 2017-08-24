@@ -33,6 +33,7 @@
         <activity android:name="iosb.fraunhofer.de.baeconroomreservation.activity.SignupActivity" android:theme="@style/AppTheme" />
         <activity android:name="iosb.fraunhofer.de.baeconroomreservation.activity.LoginActivity" android:theme="@style/AppTheme" />
         <activity android:name="iosb.fraunhofer.de.baeconroomreservation.activity.RoomDetailsActivity" android:theme="@style/AppTheme" />
+        <activity android:name="iosb.fraunhofer.de.baeconroomreservation.activity.TermDetailsActivity" android:theme="@style/AppTheme" />
         <service android:name="iosb.fraunhofer.de.baeconroomreservation.service.AuthenticatorService">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />

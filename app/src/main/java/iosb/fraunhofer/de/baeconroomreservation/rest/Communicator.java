@@ -5,10 +5,13 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import org.altbeacon.beacon.Beacon;
@@ -16,12 +19,14 @@ import org.altbeacon.beacon.Beacon;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import iosb.fraunhofer.de.baeconroomreservation.activity.LoginActivity;
 import iosb.fraunhofer.de.baeconroomreservation.activity.RoomDetailsActivity;
+import iosb.fraunhofer.de.baeconroomreservation.activity.TermDetailsActivity;
+import iosb.fraunhofer.de.baeconroomreservation.adapters.UnixEpochDateTypeAdapter;
 import iosb.fraunhofer.de.baeconroomreservation.auth.TokenAuthInterceptor;
 import iosb.fraunhofer.de.baeconroomreservation.entity.LoginRequest;
 import iosb.fraunhofer.de.baeconroomreservation.entity.LoginResponse;
@@ -30,6 +35,7 @@ import iosb.fraunhofer.de.baeconroomreservation.entity.NerbyResponse;
 import iosb.fraunhofer.de.baeconroomreservation.entity.ReservationResponse;
 import iosb.fraunhofer.de.baeconroomreservation.entity.ReserveRequest;
 import iosb.fraunhofer.de.baeconroomreservation.entity.Term;
+import iosb.fraunhofer.de.baeconroomreservation.entity.TermDetails;
 import iosb.fraunhofer.de.baeconroomreservation.entity.UserRepresentation;
 import iosb.fraunhofer.de.baeconroomreservation.fragments.CalendarFragment;
 import iosb.fraunhofer.de.baeconroomreservation.fragments.RoomListFragment;
@@ -57,7 +63,7 @@ public class Communicator
 
     private static APIterface loginService;
     //TODO IP adrress
-    private static final String SERVER_URL = "http://192.168.42.176";
+    private static final String SERVER_URL = "http://192.168.42.61";
 
     private static void initalizator()
     {
@@ -73,10 +79,14 @@ public class Communicator
                 httpClient.addInterceptor(interceptor);
         }
 
+        final Gson gson = new GsonBuilder()
+                .registerTypeAdapter(Date.class, UnixEpochDateTypeAdapter.getUnixEpochDateTypeAdapter())
+                .create();
+
         Retrofit retrofit = new Retrofit.Builder()
                 .client(httpClient.build())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .baseUrl(SERVER_URL)
                 .build();
 
@@ -313,6 +323,8 @@ public class Communicator
 
     public static void getfavoritesTerms(final CalendarFragment fragment)
     {
+        if(service == null) {initalizator();}
+
         Call<List<Term>> call = service.getFavoritesTerms();
 
         call.enqueue(new Callback<List<Term>>() {
@@ -323,12 +335,55 @@ public class Communicator
                 {
                     fragment.setTerms(response.body());
                 }
+                else if(response.code() == 403)
+                {
+                    goToLogin();
+                }
             }
 
             @Override
             public void onFailure(Call<List<Term>> call, Throwable t)
             {
 
+            }
+        });
+    }
+
+    public static void getTerm(Term term)
+    {
+        Call<TermDetails> call = service.getSelectedTerm(term);
+
+        final ProgressDialog progressDialog = new ProgressDialog(context);
+        progressDialog.setTitle("Getting");
+        progressDialog.setMessage("Trying to get term...");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+
+        call.enqueue(new Callback<TermDetails>()
+        {
+            @Override
+            public void onResponse(Call<TermDetails> call, Response<TermDetails> response)
+            {
+                if (response.code() == 200)
+                {
+                    //TODO star new activity
+                    Intent intent = new Intent(context, TermDetailsActivity.class);
+                    Bundle b = new Bundle();
+                    b.putSerializable("term", response.body()); //Your id
+                    intent.putExtras(b); //Put your id to your next Intent
+                    context.startActivity(intent);
+                }
+                else if(response.code() == 403)
+                {
+                    goToLogin();
+                }
+                progressDialog.dismiss();
+            }
+
+            @Override
+            public void onFailure(Call<TermDetails> call, Throwable t)
+            {
+                progressDialog.dismiss();
             }
         });
     }
