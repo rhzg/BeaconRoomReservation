@@ -63,7 +63,7 @@ public class Communicator
 
     private static APIterface loginService;
     //TODO IP adrress
-    private static final String SERVER_URL = "http://192.168.42.61";
+    private static final String SERVER_URL = "http://192.168.42.172";
 
     private static void initalizator()
     {
@@ -99,8 +99,6 @@ public class Communicator
         //Here a logging interceptor is created
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-
-
 
         //The logging interceptor will be added to the http client
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();

@@ -2,12 +2,15 @@ package iosb.fraunhofer.de.baeconroomreservation.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import iosb.fraunhofer.de.baeconroomreservation.R;
 import iosb.fraunhofer.de.baeconroomreservation.entity.TermDetails;
+import iosb.fraunhofer.de.baeconroomreservation.entity.UserRepresentation;
 
 /**
  *
@@ -22,6 +25,7 @@ public class TermDetailsActivity extends AppCompatActivity
     @BindView(R.id.desc) TextView _title;
     @BindView(R.id.location) TextView _location;
     @BindView(R.id.initilaizer) TextView _initilaizer;
+    @BindView(R.id.usersInTerm) ListView _users;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +48,9 @@ public class TermDetailsActivity extends AppCompatActivity
         _location.setText(term.getLocation());
         _startDate.setText(term.getStartDate().toString());
         _title.setText(term.getDescription());
+
+        final ArrayAdapter<UserRepresentation> arrayAdapter = new ArrayAdapter<UserRepresentation>(this, android.R.layout.simple_list_item_1, term.getUsers());
+        _users.setAdapter(arrayAdapter);
     }
 
 
