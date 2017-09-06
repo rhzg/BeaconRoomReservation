@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import iosb.fraunhofer.de.baeconroomreservation.activity.LoginActivity;
 import iosb.fraunhofer.de.baeconroomreservation.activity.RoomDetailsActivity;
 import iosb.fraunhofer.de.baeconroomreservation.activity.TermDetailsActivity;
 import iosb.fraunhofer.de.baeconroomreservation.adapters.UnixEpochDateTypeAdapter;
@@ -63,7 +64,7 @@ public class Communicator
 
     private static APIterface loginService;
     //TODO IP adrress
-    private static final String SERVER_URL = "http://192.168.42.172";
+    private static final String SERVER_URL = "http://192.168.42.10";
 
     private static void initalizator()
     {
@@ -216,6 +217,9 @@ public class Communicator
             @Override
             public void onFailure(Call<ReservationResponse> call, Throwable t)
             {
+                progressDialog.hide();
+                Toast.makeText(context, "Ups something went wrong",
+                        Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "problem");
             }
         });
@@ -342,7 +346,35 @@ public class Communicator
             @Override
             public void onFailure(Call<List<Term>> call, Throwable t)
             {
+                fragment.fail();
+            }
+        });
+    }
 
+    public static void getMyTerms(final CalendarFragment fragment)
+    {
+        if(service == null) {initalizator();}
+
+        Call<List<Term>> call = service.getMyTerms();
+
+        call.enqueue(new Callback<List<Term>>() {
+            @Override
+            public void onResponse(Call<List<Term>> call, Response<List<Term>> response)
+            {
+                if (response.code() == 200)
+                {
+                    fragment.setTerms(response.body());
+                }
+                else if(response.code() == 403)
+                {
+                    goToLogin();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Term>> call, Throwable t)
+            {
+                fragment.fail();
             }
         });
     }
@@ -382,6 +414,7 @@ public class Communicator
             public void onFailure(Call<TermDetails> call, Throwable t)
             {
                 progressDialog.dismiss();
+                Toast.makeText(context, "Ups something went wrong", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -391,8 +424,6 @@ public class Communicator
         Toast.makeText(context, "Token expired",
                 Toast.LENGTH_SHORT).show();
         AccountManager.get(context).invalidateAuthToken(AUTH_TOKEN_TYPE, token);
-//        Intent intent = new Intent(context, LoginActivity.class);
-//        context.startActivity(intent);
     }
 
     public static void setContext(Context context) {
