@@ -1,11 +1,13 @@
 package iosb.fraunhofer.de.baeconroomreservation.activity;
 
+import android.accounts.AccountManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.NavigationView.OnNavigationItemSelectedListener;
 import android.support.v4.app.TaskStackBuilder;
@@ -33,6 +35,8 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
     // different Activities of the app through the Nav Drawer
     static final int MAIN_CONTENT_FADEOUT_DURATION = 150;
     static final int MAIN_CONTENT_FADEIN_DURATION = 250;
+
+    private static final String AUTH_TOKEN_TYPE = "iosb.fraunhofer.de.baeconroomreservation";
 
     // Navigation drawer:
     private DrawerLayout mDrawerLayout;
@@ -65,7 +69,7 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
     protected abstract int getNavigationDrawerID();
 
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         final int itemId = item.getItemId();
 
         return goToNavigationItem(itemId);
@@ -107,11 +111,7 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
         }
     }
 
-    /**
-     * Enables back navigation for activities that are launched from the NavBar. See
-     * {@code AndroidManifest.xml} to find out the parent activity names for each activity.
-     * @param intent
-     */
+
     private void createBackStack(Intent intent) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             TaskStackBuilder builder = TaskStackBuilder.create(this);
@@ -123,11 +123,6 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
         }
     }
 
-    /**
-     * This method manages the behaviour of the navigation drawer
-     * Add your menu items (ids) to res/menu/activity_main_drawer.xml
-     * @param itemId Item that has been clicked by the user
-     */
     private void callDrawerItem(final int itemId) {
 
         Intent intent;
@@ -142,8 +137,10 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
                 intent = new Intent(this, MainActivity.class);
                 createBackStack(intent);
                 break;
-            case R.id.nav_help:
-                intent = new Intent(this, MainActivity.class);
+            case R.id.nav_sign_out:
+                AccountManager am = AccountManager.get(getApplicationContext());
+                am.removeAccountExplicitly(am.getAccountsByType(AUTH_TOKEN_TYPE)[0]);
+                intent = new Intent(this, LoginActivity.class);
                 createBackStack(intent);
                 break;
             default:

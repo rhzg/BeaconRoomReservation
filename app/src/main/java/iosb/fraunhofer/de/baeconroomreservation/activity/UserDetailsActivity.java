@@ -5,7 +5,6 @@ import android.content.res.TypedArray;
 import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.alamkanak.weekview.MonthLoader;
@@ -24,8 +23,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import iosb.fraunhofer.de.baeconroomreservation.R;
 import iosb.fraunhofer.de.baeconroomreservation.adapters.Event;
-import iosb.fraunhofer.de.baeconroomreservation.entity.RoomDetailsRepresentation;
 import iosb.fraunhofer.de.baeconroomreservation.entity.Term;
+import iosb.fraunhofer.de.baeconroomreservation.entity.UserDetailsRepresentation;
 import iosb.fraunhofer.de.baeconroomreservation.rest.Communicator;
 
 /**
@@ -33,24 +32,24 @@ import iosb.fraunhofer.de.baeconroomreservation.rest.Communicator;
  * Created by sakovi on 08.09.2017.
  */
 
-public class RoomDetailsActivity extends AppCompatActivity implements WeekView.EventClickListener, MonthLoader.MonthChangeListener, WeekView.EventLongPressListener, WeekView.EmptyViewLongPressListener, WeekViewLoader
+public class UserDetailsActivity extends AppCompatActivity implements WeekView.EventClickListener, MonthLoader.MonthChangeListener, WeekView.EventLongPressListener, WeekView.EmptyViewLongPressListener, WeekViewLoader
 {
+
     @BindView(R.id.weekView) WeekView weekView;
-    @BindView(R.id.occupied) TextView _occupied;
-    @BindView(R.id.action_favorite) Button _btnFavorite;
-
-
+    @BindView(R.id.telNumber) TextView _telNumber;
+    @BindView(R.id.email) TextView _email;
     private List<Term> terms = new ArrayList<>();
+
 
     @Override
     protected void onCreate(final Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_room_details);
+        setContentView(R.layout.activity_user_details);
         ButterKnife.bind(this);
 
-        getSupportActionBar().setTitle(getIntent().getStringExtra("ROOM_NAME"));
-        Communicator.getRoomDetails(getIntent().getStringExtra("ROOM_ID"), this);
+        getSupportActionBar().setTitle(getIntent().getStringExtra("USER_NAME"));
+        Communicator.getUserDetails(getIntent().getStringExtra("USER_ID"), this);
 
         weekView.setOnEventClickListener(this);
         weekView.setMonthChangeListener(this);
@@ -64,7 +63,8 @@ public class RoomDetailsActivity extends AppCompatActivity implements WeekView.E
     public List<? extends WeekViewEvent> onMonthChange(int newYear, int newMonth)
     {
         List<WeekViewEvent> weekViewEvents = new ArrayList<>();
-        return weekViewEvents;    }
+        return weekViewEvents;
+    }
 
     @Override
     public void onEmptyViewLongPress(Calendar time) {
@@ -72,8 +72,7 @@ public class RoomDetailsActivity extends AppCompatActivity implements WeekView.E
     }
 
     @Override
-    public void onEventClick(WeekViewEvent event, RectF eventRect)
-    {
+    public void onEventClick(WeekViewEvent event, RectF eventRect) {
         Communicator.setContext(this);
         Communicator.getTerm(((Event) event).getTerm());
     }
@@ -117,29 +116,14 @@ public class RoomDetailsActivity extends AppCompatActivity implements WeekView.E
                 weekViewEvents.add(weekViewEvent);
             }
         }
-        return weekViewEvents;    }
+        return weekViewEvents;
+    }
 
-
-    public void setDetails(RoomDetailsRepresentation room)
+    public void setDetails(UserDetailsRepresentation user)
     {
-        if(room.isFavorite())
-        {
-            _btnFavorite.setBackgroundResource(R.drawable.star_on);
-        }else
-        {
-            _btnFavorite.setBackgroundResource(R.drawable.star_off);
-        }
-
-        if (room.isOccupied())
-        {
-            _occupied.setText("OCCUPIED");
-//            _occupied.setTextColor(getColor(R.color.red_500));
-        }else
-        {
-            _occupied.setText("FREE");
-//            _occupied.setTextColor(getColor(R.color.green_500));
-        }
-        this.terms = room.getTerms();
+        _email.setText(user.getEmail());
+        _telNumber.setText(user.getPhoneNumber());
+        this.terms = user.getTerms();
         weekView.notifyDatasetChanged();
     }
 }

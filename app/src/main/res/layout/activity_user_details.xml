@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1.0">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.1"
+        android:layout_margin="5dp"
+        android:weightSum="1.0">
+
+        <TextView
+            android:layout_marginRight="5dp"
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:layout_weight=".35"
+            android:background="@color/primary"
+            android:textColor="@color/grey_200"
+            android:text="@string/phone_number"
+            android:gravity="center"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
+            android:id="@+id/telNumber"
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:layout_weight=".65"
+            android:background="@color/blue_grey_400"
+            android:text=""
+            android:gravity="center"
+            android:textColor="@color/blue_300"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.1"
+        android:layout_margin="5dp"
+        android:weightSum="1.0"
+        android:id="@+id/linearLayout">
+
+        <TextView
+            android:layout_marginRight="5dp"
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:layout_weight=".2"
+            android:background="@color/primary"
+            android:textColor="@color/grey_200"
+            android:text="@string/email"
+            android:gravity="center"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <TextView
+            android:id="@+id/email"
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:layout_weight=".8"
+            android:background="@color/blue_grey_400"
+            android:text=""
+            android:gravity="center"
+            android:textColor="@color/blue_300"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    </LinearLayout>
+
+    <com.alamkanak.weekview.WeekView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/weekView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.8"
+        app:eventTextColor="@android:color/white"
+        app:textSize="12sp"
+        app:hourHeight="60dp"
+        app:headerColumnPadding="8dp"
+        app:headerColumnTextColor="#8f000000"
+        app:headerRowPadding="12dp"
+        app:columnGap="8dp"
+        app:noOfVisibleDays="3"
+        app:showNowLine="true"
+        app:headerRowBackgroundColor="#ffefefef"
+        app:dayBackgroundColor="#05000000"
+        app:todayBackgroundColor="#1848adff"
+        app:headerColumnBackground="#ffffffff"
+        />
+
+</LinearLayout>

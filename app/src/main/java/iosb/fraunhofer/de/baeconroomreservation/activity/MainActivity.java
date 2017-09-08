@@ -23,6 +23,7 @@ import java.io.IOException;
 import iosb.fraunhofer.de.baeconroomreservation.R;
 import iosb.fraunhofer.de.baeconroomreservation.fragments.CalendarFragment;
 import iosb.fraunhofer.de.baeconroomreservation.fragments.RoomListFragment;
+import iosb.fraunhofer.de.baeconroomreservation.fragments.SearchFragment;
 import iosb.fraunhofer.de.baeconroomreservation.rest.Communicator;
 
 public class MainActivity extends BaseActivity
@@ -111,7 +112,7 @@ public class MainActivity extends BaseActivity
                                 fragment = CalendarFragment.instanceOf();
                                 break;
                             case R.id.action_search:
-                                fragment = CalendarFragment.instanceOf();
+                                fragment = SearchFragment.instanceOf();
                                 break;
                             case R.id.action_favorite:
                                 fragment = RoomListFragment.instanceOf(true);

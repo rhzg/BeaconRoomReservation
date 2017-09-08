@@ -33,8 +33,6 @@ public class LoginActivity extends AccountAuthenticatorActivity
     @BindView (R.id.link_signup) TextView _signupLink;
     ProgressDialog progress;
 
-
-
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -77,8 +75,6 @@ public class LoginActivity extends AccountAuthenticatorActivity
         password = _passwordText.getText().toString();
 
         new MyTask().execute();
-
-
     }
 
     private class MyTask extends AsyncTask<String, Integer, String>
@@ -128,8 +124,6 @@ public class LoginActivity extends AccountAuthenticatorActivity
     {
         if (requestCode == REQUEST_SIGNUP) {
             if (resultCode == RESULT_OK) {
-                // TODO: Implement successful signup logic here
-                // By default we just finish the Activity and log them in automatically
                 this.finish();
             }
         }
@@ -137,7 +131,6 @@ public class LoginActivity extends AccountAuthenticatorActivity
 
     @Override
     public void onBackPressed() {
-        // disable going back to the MainActivity
         moveTaskToBack(true);
     }
 
@@ -177,7 +170,6 @@ public class LoginActivity extends AccountAuthenticatorActivity
     public void createAccount(String email, String password, String authToken)
     {
         Account account = new Account(email, "iosb.fraunhofer.de.baeconroomreservation");
-
         AccountManager am = AccountManager.get(this);
         am.addAccountExplicitly(account, password, null);
         am.setAuthToken(account, "full_access", authToken);

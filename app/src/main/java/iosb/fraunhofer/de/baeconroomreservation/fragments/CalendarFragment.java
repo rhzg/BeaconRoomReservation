@@ -9,6 +9,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.alamkanak.weekview.MonthLoader;
 import com.alamkanak.weekview.WeekView;
@@ -29,8 +31,11 @@ import iosb.fraunhofer.de.baeconroomreservation.rest.Communicator;
 
 import static iosb.fraunhofer.de.baeconroomreservation.rest.Communicator.getfavoritesTerms;
 
-public class CalendarFragment extends Fragment implements WeekView.EventClickListener, MonthLoader.MonthChangeListener, WeekView.EventLongPressListener, WeekView.EmptyViewLongPressListener, WeekViewLoader {
+public class CalendarFragment extends Fragment implements WeekView.EventClickListener, MonthLoader.MonthChangeListener, WeekView.EventLongPressListener, WeekView.EmptyViewLongPressListener, WeekViewLoader
+{
     private WeekView mWeekView;
+    private Button favoriteRooms;
+    private Button myTerms;
     private List<Term> terms = new ArrayList<>();
     private ProgressDialog progressDialog;
 
@@ -51,6 +56,31 @@ public class CalendarFragment extends Fragment implements WeekView.EventClickLis
     {
         View root = inflater.inflate(R.layout.calendar_fragment, container, false);
         mWeekView = (WeekView) root.findViewById(R.id.weekView);
+        favoriteRooms = (Button) root.findViewById(R.id.favoriteTerms);
+        myTerms = (Button) root.findViewById(R.id.myTerms);
+
+        favoriteRooms.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                progressDialog.show();
+                favoriteRooms.setBackgroundResource(R.color.grey_600);
+                myTerms.setBackgroundResource(R.color.grey_400);
+                Communicator.getfavoritesTerms(CalendarFragment.this);
+            }
+        });
+
+        myTerms.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                progressDialog.show();
+                favoriteRooms.setBackgroundResource(R.color.grey_400);
+                myTerms.setBackgroundResource(R.color.grey_600);
+                Communicator.getMyTerms(CalendarFragment.this);
+            }
+        });
+
         mWeekView.setOnEventClickListener(this);
         mWeekView.setMonthChangeListener(this);
         mWeekView.setEventLongPressListener(this);
@@ -130,5 +160,11 @@ public class CalendarFragment extends Fragment implements WeekView.EventClickLis
             }
         }
         return weekViewEvents;
+    }
+
+    public void fail()
+    {
+        progressDialog.hide();
+        Toast.makeText(getActivity(), "Ups something went wrong", Toast.LENGTH_SHORT).show();
     }
 }

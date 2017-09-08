@@ -12,9 +12,9 @@
     <group android:id="@+id/nav_group_add"
         android:checkableBehavior="all">
         <item
-            android:id="@+id/nav_help"
-            android:icon="@drawable/ic_menu_help"
-            android:title="@string/action_help" />
+            android:id="@+id/nav_sign_out"
+            android:icon="@drawable/ic_menu_sign_out"
+            android:title="@string/signout" />
         <item
             android:id="@+id/nav_about"
             android:icon="@drawable/ic_menu_info"

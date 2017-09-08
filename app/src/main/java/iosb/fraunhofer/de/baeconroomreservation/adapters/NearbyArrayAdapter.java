@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -28,12 +29,16 @@ public class NearbyArrayAdapter extends ArrayAdapter
 {
     private final Context context;
     private ArrayList<NerbyResponse> values;
-    static final long HALF_HOURE = 1_800_000;
+    private static final long HALF_HOUR = 1_800_000;
+    SimpleDateFormat dt;
 
-    public NearbyArrayAdapter(Context context, ArrayList<NerbyResponse> values) {
+    public NearbyArrayAdapter(Context context, ArrayList<NerbyResponse> values)
+    {
         super(context, -1, values);
         this.context = context;
         this.values = values;
+        dt = new SimpleDateFormat("HH:mm dd-mm-yyyy");
+
     }
 
     @NonNull
@@ -80,14 +85,14 @@ public class NearbyArrayAdapter extends ArrayAdapter
         Date dateEnd = new Date(Long.parseLong(values.get(position).getUntill()));
 
         TextView dateEndTxt = (TextView) rowView.findViewById(R.id.dateEnd);
-        dateEndTxt.setText("Until:    " + new Date(Long.parseLong(values.get(position).getUntill())));
+        dateEndTxt.setText("Until:    " +dt.format( new Date(Long.parseLong(values.get(position).getUntill()))));
 
         View view = rowView.findViewById(R.id.occupied);
         if (values.get(position).getOccupied())
         {
             Calendar date = Calendar.getInstance();
             long t = date.getTimeInMillis();
-            Date half = new Date(t + HALF_HOURE);
+            Date half = new Date(t + HALF_HOUR);
             if(dateEnd.after(half))
             {
                 view.setBackgroundColor((ContextCompat.getColor(getContext(), R.color.red_500)));
@@ -95,13 +100,13 @@ public class NearbyArrayAdapter extends ArrayAdapter
             else {
                 view.setBackgroundColor((ContextCompat.getColor(getContext(), R.color.yellow_700)));
             }
-            dateStart.setText("From:    " + new Date(Long.parseLong(values.get(position).getFrom())));
-            dateEndTxt.setText("Until:    " + new Date(Long.parseLong(values.get(position).getUntill())));
+            dateStart.setText("From:    " + dt.format(new Date(Long.parseLong(values.get(position).getFrom()))));
+            dateEndTxt.setText("Until:    " + dt.format(new Date(Long.parseLong(values.get(position).getUntill()))));
         }
         else
         {
             dateStart.setText("Available");
-            dateEndTxt.setText("Until:    " + new Date(Long.parseLong(values.get(position).getFrom())));
+            dateEndTxt.setText("Until:    " + dt.format(new Date(Long.parseLong(values.get(position).getFrom()))));
         }
         //TODO add ocuupied
         return rowView;

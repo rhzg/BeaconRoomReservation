@@ -9,9 +9,9 @@ import java.io.Serializable;
 
 public class UserRepresentation implements Serializable
 {
-    private String name;
+    String name;
 
-    private String userID;
+    String userID;
 
     public UserRepresentation(String name, String userID) {
         this.name = name;

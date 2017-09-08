@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:weightSum="1.0"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:background="@color/grey_200"
+        android:weightSum="1.0"
+        android:layout_weight="0.1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+
+        <Button
+            android:id="@+id/action_favorite"
+            android:background="@drawable/star_off"
+            android:layout_width="0dp"
+            android:layout_weight="0.15"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:id="@+id/occupied"
+            android:layout_width="0dp"
+            android:layout_weight="0.85"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/occupied"
+            android:textAppearance="@android:style/TextAppearance.Large"
+            android:textColor="@color/red_500"/>
+
+    </LinearLayout>
+
+    <com.alamkanak.weekview.WeekView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/weekView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.9"
+        app:eventTextColor="@android:color/white"
+        app:textSize="12sp"
+        app:hourHeight="60dp"
+        app:headerColumnPadding="8dp"
+        app:headerColumnTextColor="#8f000000"
+        app:headerRowPadding="12dp"
+        app:columnGap="8dp"
+        app:noOfVisibleDays="3"
+        app:showNowLine="true"
+        app:headerRowBackgroundColor="#ffefefef"
+        app:dayBackgroundColor="#05000000"
+        app:todayBackgroundColor="#1848adff"
+        app:headerColumnBackground="#ffffffff"
+        />
+
+</LinearLayout>

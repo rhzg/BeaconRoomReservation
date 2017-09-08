@@ -24,9 +24,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import iosb.fraunhofer.de.baeconroomreservation.activity.LoginActivity;
 import iosb.fraunhofer.de.baeconroomreservation.activity.RoomDetailsActivity;
+import iosb.fraunhofer.de.baeconroomreservation.activity.RoomReservationActivity;
 import iosb.fraunhofer.de.baeconroomreservation.activity.TermDetailsActivity;
+import iosb.fraunhofer.de.baeconroomreservation.activity.UserDetailsActivity;
 import iosb.fraunhofer.de.baeconroomreservation.adapters.UnixEpochDateTypeAdapter;
 import iosb.fraunhofer.de.baeconroomreservation.auth.TokenAuthInterceptor;
 import iosb.fraunhofer.de.baeconroomreservation.entity.LoginRequest;
@@ -35,11 +36,15 @@ import iosb.fraunhofer.de.baeconroomreservation.entity.NerbyRequest;
 import iosb.fraunhofer.de.baeconroomreservation.entity.NerbyResponse;
 import iosb.fraunhofer.de.baeconroomreservation.entity.ReservationResponse;
 import iosb.fraunhofer.de.baeconroomreservation.entity.ReserveRequest;
+import iosb.fraunhofer.de.baeconroomreservation.entity.RoomDetailsRepresentation;
+import iosb.fraunhofer.de.baeconroomreservation.entity.SearchRequest;
 import iosb.fraunhofer.de.baeconroomreservation.entity.Term;
 import iosb.fraunhofer.de.baeconroomreservation.entity.TermDetails;
+import iosb.fraunhofer.de.baeconroomreservation.entity.UserDetailsRepresentation;
 import iosb.fraunhofer.de.baeconroomreservation.entity.UserRepresentation;
 import iosb.fraunhofer.de.baeconroomreservation.fragments.CalendarFragment;
 import iosb.fraunhofer.de.baeconroomreservation.fragments.RoomListFragment;
+import iosb.fraunhofer.de.baeconroomreservation.fragments.SearchFragment;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
@@ -125,7 +130,7 @@ public class Communicator
     {
         boolean returnValue = false;
         if(loginService == null) {loginServiceInitalizator();}
-
+        service = null;
         Call<LoginResponse> call = loginService.postLogin(new LoginRequest(username, password));
 
         try {
@@ -203,7 +208,6 @@ public class Communicator
             {
                 if (response.code() == 200)
                 {
-                    progressDialog.dismiss();
                     Toast.makeText(activity, "Reservation was success: "+response.body().isSuccess(),
                             Toast.LENGTH_SHORT).show();
                     activity.finish();
@@ -212,6 +216,7 @@ public class Communicator
                 {
                     goToLogin();
                 }
+                progressDialog.dismiss();
             }
 
             @Override
@@ -226,7 +231,7 @@ public class Communicator
 
     }
 
-    public static void userGet(final RoomDetailsActivity roomDetailsActivity)
+    public static void userGet(final RoomReservationActivity roomReservationActivity)
     {
         Call<List<UserRepresentation>> call = service.getUsers();
 
@@ -236,7 +241,7 @@ public class Communicator
             {
                 if (response.code() == 200)
                 {
-                    roomDetailsActivity.setUserRepresentations((ArrayList<UserRepresentation>) response.body());
+                    roomReservationActivity.setUserRepresentations((ArrayList<UserRepresentation>) response.body());
                 }
                 else if(response.code() == 403)
                 {
@@ -419,6 +424,64 @@ public class Communicator
         });
     }
 
+    public static void searchUsers(String query, final SearchFragment searchFragment)
+    {
+        if(service == null) {initalizator();}
+
+        SearchRequest searchRequest = new SearchRequest(query);
+
+        Call<List<UserRepresentation>> call = service.postSearchUsers(searchRequest);
+
+        call.enqueue(new Callback<List<UserRepresentation>>() {
+            @Override
+            public void onResponse(Call<List<UserRepresentation>> call, Response<List<UserRepresentation>> response)
+            {
+                if (response.code() == 200)
+                {
+                    searchFragment.updateList(response.body());
+                }
+                else if(response.code() == 403)
+                {
+                    goToLogin();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<UserRepresentation>> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public static void searchRooms(String query, final SearchFragment searchFragment)
+    {
+        if(service == null) {initalizator();}
+
+        SearchRequest searchRequest = new SearchRequest(query);
+
+        Call<List<UserRepresentation>> call = service.postSearchRooms(searchRequest);
+
+        call.enqueue(new Callback<List<UserRepresentation>>() {
+            @Override
+            public void onResponse(Call<List<UserRepresentation>> call, Response<List<UserRepresentation>> response)
+            {
+                if (response.code() == 200)
+                {
+                    searchFragment.updateList(response.body());
+                }
+                else if(response.code() == 403)
+                {
+                    goToLogin();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<UserRepresentation>> call, Throwable t) {
+
+            }
+        });
+    }
+
     public static void goToLogin()
     {
         Toast.makeText(context, "Token expired",
@@ -428,5 +491,64 @@ public class Communicator
 
     public static void setContext(Context context) {
         Communicator.context = context;
+    }
+
+
+    public static void getUserDetails(String user_id, final UserDetailsActivity activity)
+    {
+        if(service == null) {initalizator();}
+
+        SearchRequest searchRequest = new SearchRequest(user_id);
+        Call<UserDetailsRepresentation> call = service.getUserDetails(searchRequest);
+
+        call.enqueue(new Callback<UserDetailsRepresentation>()
+        {
+            @Override
+            public void onResponse(Call<UserDetailsRepresentation> call, Response<UserDetailsRepresentation> response)
+            {
+                if (response.code() == 200)
+                {
+                    activity.setDetails(response.body());
+                }
+                else if(response.code() == 403)
+                {
+                    goToLogin();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserDetailsRepresentation> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public static void getRoomDetails(String room_id, final RoomDetailsActivity roomDetailsActivity)
+    {
+        if(service == null) {initalizator();}
+
+        SearchRequest searchRequest = new SearchRequest(room_id);
+        Call<RoomDetailsRepresentation> call = service.getRoomDetails(searchRequest);
+
+        call.enqueue(new Callback<RoomDetailsRepresentation>()
+        {
+            @Override
+            public void onResponse(Call<RoomDetailsRepresentation> call, Response<RoomDetailsRepresentation> response)
+            {
+                if (response.code() == 200)
+                {
+                    roomDetailsActivity.setDetails(response.body());
+                }
+                else if(response.code() == 403)
+                {
+                    goToLogin();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RoomDetailsRepresentation> call, Throwable t) {
+
+            }
+        });
     }
 }

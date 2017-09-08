@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
     android:layout_height="?android:attr/listPreferredItemHeight"
     android:padding="6dip" >
 
@@ -25,51 +26,69 @@
         android:layout_alignStart="@+id/occupied"
         android:layout_alignLeft="@+id/occupied" />
 
-    <TextView
-        android:id="@+id/secondLine"
-        android:layout_width="wrap_content"
-        android:layout_height="26dp"
-        android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@id/favoriteStar"
-        android:ellipsize="marquee"
-        android:maxLines="1"
-        android:text="Description"
-        android:textSize="12sp" />
-
-    <TextView
-        android:id="@+id/firstLine"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/secondLine"
-        android:layout_alignParentTop="true"
-        android:layout_alignWithParentIfMissing="true"
-        android:layout_toRightOf="@id/favoriteStar"
-        android:gravity="center_vertical"
-        android:text="Example application"
-        android:textSize="16sp" />
-
-    <TextView
-        android:id="@+id/dateStart"
+    <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/secondLine"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/firstLine"
-        android:gravity="center_vertical"
-        android:text="Available from: 20:08 1.4.2017"
-        android:textAlignment="center"
-        android:textSize="16sp" />
+        android:layout_height="match_parent"
+        android:layout_toRightOf="@id/favoriteStar"
+        android:weightSum="1.0"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/dateEnd"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/dateStart"
-        android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@+id/secondLine"
-        android:gravity="center_vertical"
-        android:text="Available from: 20:08 1.4.2017"
-        android:textAlignment="center"
-        android:textSize="16sp" />
+        <LinearLayout
+            android:id="@+id/firstRow"
+            android:weightSum="1.0"
+            android:layout_width="match_parent"
+            android:layout_weight="0.5"
+            android:layout_height="0dp">
+
+            <TextView
+                android:id="@+id/firstLine"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:layout_weight="0.5"
+                android:text="Example application"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/dateStart"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="Available from: 20:08 1.4.2017"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/secondRow"
+            android:weightSum="1.0"
+            android:layout_width="match_parent"
+            android:layout_weight="0.5"
+            android:layout_height="0dp">
+
+            <TextView
+                android:id="@+id/secondLine"
+                android:layout_width="0dp"
+                android:layout_height="26dp"
+                android:layout_weight="0.5"
+                android:ellipsize="marquee"
+                android:maxLines="1"
+                android:text="Description"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/dateEnd"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="Available from: 20:08ch 1.4.2017"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+
 
 </RelativeLayout>

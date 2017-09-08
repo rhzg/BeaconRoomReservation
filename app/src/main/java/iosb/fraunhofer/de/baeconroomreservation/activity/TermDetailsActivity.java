@@ -6,6 +6,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import iosb.fraunhofer.de.baeconroomreservation.R;
@@ -19,6 +21,7 @@ import iosb.fraunhofer.de.baeconroomreservation.entity.UserRepresentation;
 
 public class TermDetailsActivity extends AppCompatActivity
 {
+    SimpleDateFormat dt;
 
     @BindView(R.id.startDate) TextView _startDate;
     @BindView(R.id.endDate) TextView _endDate;
@@ -28,25 +31,30 @@ public class TermDetailsActivity extends AppCompatActivity
     @BindView(R.id.usersInTerm) ListView _users;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_term_details);
         ButterKnife.bind(this);
 
         Bundle b = getIntent().getExtras();
         TermDetails term = new TermDetails();
-        if (b != null){
+
+        if (b != null)
+        {
             term = (TermDetails) b.getSerializable("term");
         }
+
+        dt = new SimpleDateFormat("HH:mm dd-mm-yyyy");
         setUp(term);
     }
 
     private void setUp(TermDetails term)
     {
-        _endDate.setText(term.getEndDate().toString());
+        _endDate.setText(dt.format(term.getEndDate()));
         _initilaizer.setText(term.getInitilaizer().getName());
         _location.setText(term.getLocation());
-        _startDate.setText(term.getStartDate().toString());
+        _startDate.setText(dt.format(term.getStartDate()));
         _title.setText(term.getDescription());
 
         final ArrayAdapter<UserRepresentation> arrayAdapter = new ArrayAdapter<UserRepresentation>(this, android.R.layout.simple_list_item_1, term.getUsers());

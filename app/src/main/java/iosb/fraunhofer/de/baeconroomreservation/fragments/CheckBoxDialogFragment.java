@@ -9,16 +9,16 @@ import android.support.v4.app.DialogFragment;
 
 import java.util.ArrayList;
 
-import iosb.fraunhofer.de.baeconroomreservation.activity.RoomDetailsActivity;
+import iosb.fraunhofer.de.baeconroomreservation.activity.RoomReservationActivity;
 import iosb.fraunhofer.de.baeconroomreservation.entity.UserRepresentation;
 
 
 
 public class CheckBoxDialogFragment extends DialogFragment
 {
-    private RoomDetailsActivity activity;
+    private RoomReservationActivity activity;
 
-    public void setActivity(RoomDetailsActivity activity) {
+    public void setActivity(RoomReservationActivity activity) {
         this.activity = activity;
     }
 

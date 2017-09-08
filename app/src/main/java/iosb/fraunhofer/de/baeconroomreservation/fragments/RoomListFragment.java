@@ -14,7 +14,6 @@ import org.altbeacon.beacon.Beacon;
 import org.altbeacon.beacon.BeaconConsumer;
 import org.altbeacon.beacon.BeaconManager;
 import org.altbeacon.beacon.BeaconParser;
-import org.altbeacon.beacon.Identifier;
 import org.altbeacon.beacon.MonitorNotifier;
 import org.altbeacon.beacon.RangeNotifier;
 import org.altbeacon.beacon.Region;
@@ -22,7 +21,7 @@ import org.altbeacon.beacon.Region;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import iosb.fraunhofer.de.baeconroomreservation.activity.RoomDetailsActivity;
+import iosb.fraunhofer.de.baeconroomreservation.activity.RoomReservationActivity;
 import iosb.fraunhofer.de.baeconroomreservation.adapters.NearbyArrayAdapter;
 import iosb.fraunhofer.de.baeconroomreservation.entity.NerbyResponse;
 import iosb.fraunhofer.de.baeconroomreservation.rest.Communicator;
@@ -64,7 +63,7 @@ public class RoomListFragment extends ListFragment implements BeaconConsumer
     @Override
     public void onListItemClick(ListView l, View v, int position, long id)
     {
-        Intent intent = new Intent(getApplicationContext(), RoomDetailsActivity.class);
+        Intent intent = new Intent(getApplicationContext(), RoomReservationActivity.class);
         intent.putExtra("ROOM_ID", nearbyRoomses.get(position).getRoomID());
         intent.putExtra("ROOM_NAME", nearbyRoomses.get(position).getName());
         startActivity(intent);

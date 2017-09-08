@@ -1,20 +1,57 @@
-<com.alamkanak.weekview.WeekView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/weekView"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="fill_parent"
     android:layout_above="@+id/bottom_navigation"
-    app:eventTextColor="@android:color/white"
-    app:textSize="12sp"
-    app:hourHeight="60dp"
-    app:headerColumnPadding="8dp"
-    app:headerColumnTextColor="#8f000000"
-    app:headerRowPadding="12dp"
-    app:columnGap="8dp"
-    app:noOfVisibleDays="3"
-    app:showNowLine="true"
-    app:headerRowBackgroundColor="#ffefefef"
-    app:dayBackgroundColor="#05000000"
-    app:todayBackgroundColor="#1848adff"
-    app:headerColumnBackground="#ffffffff" />
+    android:orientation="vertical"
+    android:weightSum="1.0">
 
+    <com.alamkanak.weekview.WeekView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/weekView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.95"
+        app:eventTextColor="@android:color/white"
+        app:textSize="12sp"
+        app:hourHeight="60dp"
+        app:headerColumnPadding="8dp"
+        app:headerColumnTextColor="#8f000000"
+        app:headerRowPadding="12dp"
+        app:columnGap="8dp"
+        app:noOfVisibleDays="3"
+        app:showNowLine="true"
+        app:headerRowBackgroundColor="#ffefefef"
+        app:dayBackgroundColor="#05000000"
+        app:todayBackgroundColor="#1848adff"
+        app:headerColumnBackground="#ffffffff"
+         />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.05"
+        android:weightSum="1.0"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/favoriteTerms"
+            android:background="@color/grey_600"
+            android:textColor="@color/white"
+            android:text="Favorite rooms"
+            android:layout_weight="0.5"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+
+        <Button
+            android:id="@+id/myTerms"
+            android:text="My dates"
+            android:background="@color/grey_400"
+            android:textColor="@color/white"
+            android:layout_weight="0.5"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+
+
+    </LinearLayout>
+
+</LinearLayout>
