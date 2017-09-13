@@ -11,12 +11,14 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
 import iosb.fraunhofer.de.baeconroomreservation.R;
+import iosb.fraunhofer.de.baeconroomreservation.activity.MainActivity;
 import iosb.fraunhofer.de.baeconroomreservation.entity.NerbyResponse;
 import iosb.fraunhofer.de.baeconroomreservation.rest.Communicator;
 
@@ -56,7 +58,8 @@ public class NearbyArrayAdapter extends ArrayAdapter
         TextView textView1 = (TextView) rowView.findViewById(R.id.secondLine);
         if(values.get(position).getDistance() != 0.0d)
         {
-            textView1.setText("Distance:    " + values.get(position).getDistance() + " m");
+            String distance = BigDecimal.valueOf(values.get(position).getDistance()).setScale(4, BigDecimal.ROUND_HALF_UP).toPlainString();
+            textView1.setText("Distance: " + distance + " m");
         }
         else
         {
@@ -85,7 +88,7 @@ public class NearbyArrayAdapter extends ArrayAdapter
         Date dateEnd = new Date(Long.parseLong(values.get(position).getUntill()));
 
         TextView dateEndTxt = (TextView) rowView.findViewById(R.id.dateEnd);
-        dateEndTxt.setText("Until:    " +dt.format( new Date(Long.parseLong(values.get(position).getUntill()))));
+        dateEndTxt.setText("Until: " +dt.format( new Date(Long.parseLong(values.get(position).getUntill()))));
 
         View view = rowView.findViewById(R.id.occupied);
         if (values.get(position).getOccupied())
@@ -100,13 +103,13 @@ public class NearbyArrayAdapter extends ArrayAdapter
             else {
                 view.setBackgroundColor((ContextCompat.getColor(getContext(), R.color.yellow_700)));
             }
-            dateStart.setText("From:    " + dt.format(new Date(Long.parseLong(values.get(position).getFrom()))));
-            dateEndTxt.setText("Until:    " + dt.format(new Date(Long.parseLong(values.get(position).getUntill()))));
+            dateStart.setText("From: " + dt.format(new Date(Long.parseLong(values.get(position).getFrom()))));
+            dateEndTxt.setText("Until: " + dt.format(new Date(Long.parseLong(values.get(position).getUntill()))));
         }
         else
         {
             dateStart.setText("Available");
-            dateEndTxt.setText("Until:    " + dt.format(new Date(Long.parseLong(values.get(position).getFrom()))));
+            dateEndTxt.setText("Until: " + dt.format(new Date(Long.parseLong(values.get(position).getFrom()))));
         }
         //TODO add ocuupied
         return rowView;

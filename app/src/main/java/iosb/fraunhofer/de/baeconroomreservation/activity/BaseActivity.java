@@ -40,7 +40,7 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
 
     // Navigation drawer:
     private DrawerLayout mDrawerLayout;
-    private NavigationView mNavigationView;
+    NavigationView mNavigationView;
 
     // Helper
     private Handler mHandler;

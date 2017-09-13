@@ -62,6 +62,7 @@ public class Communicator
 {
     private static final String TAG = "Communicator";
     public static String token;
+    public static boolean admin = false;
     private static APIterface service;
     private static Context context = null;
     private static final String AUTH_TOKEN_TYPE = "iosb.fraunhofer.de.baeconroomreservation";
@@ -138,6 +139,7 @@ public class Communicator
             if(loginResponse.code() == 200)
             {
                 token = loginResponse.body().getToken();
+                admin = loginResponse.body().isAdmin();
                 Log.e(TAG,"Success");
                 returnValue = true;
             }
@@ -253,6 +255,40 @@ public class Communicator
             public void onFailure(Call<List<UserRepresentation>> call, Throwable t) {
 
             }
+        });
+    }
+
+    public static void makeFavorite(String roomId, final Activity activity)
+    {
+        Call<ReservationResponse> call = service.makeFavorite(roomId);
+
+        final ProgressDialog progressDialog = new ProgressDialog(activity);
+        progressDialog.setTitle("Trying");
+        progressDialog.setMessage("Trying to make room favorite/unfavorite.");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+
+        call.enqueue(new Callback<ReservationResponse>() {
+            @Override
+            public void onResponse(Call<ReservationResponse> call, Response<ReservationResponse> response)
+            {
+                if (response.code() == 200)
+                {
+                    activity.finish();
+                    activity.startActivity(activity.getIntent());
+                }
+                else if(response.code() == 403)
+                {
+                    goToLogin();
+                }
+                progressDialog.dismiss();
+            }
+
+            @Override
+            public void onFailure(Call<ReservationResponse> call, Throwable t)
+            {
+                progressDialog.dismiss();
+                Toast.makeText(context, "Ups something went wrong", Toast.LENGTH_SHORT).show();            }
         });
     }
 

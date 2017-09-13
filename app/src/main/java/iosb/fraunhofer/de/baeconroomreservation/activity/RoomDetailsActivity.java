@@ -1,10 +1,13 @@
 package iosb.fraunhofer.de.baeconroomreservation.activity;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.RectF;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -38,6 +41,7 @@ public class RoomDetailsActivity extends AppCompatActivity implements WeekView.E
     @BindView(R.id.weekView) WeekView weekView;
     @BindView(R.id.occupied) TextView _occupied;
     @BindView(R.id.action_favorite) Button _btnFavorite;
+    @BindView(R.id.fab) FloatingActionButton _fab;
 
 
     private List<Term> terms = new ArrayList<>();
@@ -58,6 +62,24 @@ public class RoomDetailsActivity extends AppCompatActivity implements WeekView.E
         weekView.setEmptyViewLongPressListener(this);
         weekView.setWeekViewLoader(this);
         weekView.goToHour(new Date().getHours());
+
+        _fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), RoomReservationActivity.class);
+                intent.putExtra("ROOM_ID", getIntent().getStringExtra("ROOM_ID"));
+                intent.putExtra("ROOM_NAME", getIntent().getStringExtra("ROOM_NAME"));
+                startActivity(intent);
+            }
+        });
+
+        _btnFavorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                Communicator.makeFavorite(getIntent().getStringExtra("ROOM_ID"), RoomDetailsActivity.this);
+            }
+        });
     }
 
     @Override
@@ -132,12 +154,12 @@ public class RoomDetailsActivity extends AppCompatActivity implements WeekView.E
 
         if (room.isOccupied())
         {
-            _occupied.setText("OCCUPIED");
-//            _occupied.setTextColor(getColor(R.color.red_500));
+            _occupied.setText("This room is occupied");
+            _occupied.setTextColor(getResources().getColor(R.color.red_500));
         }else
         {
-            _occupied.setText("FREE");
-//            _occupied.setTextColor(getColor(R.color.green_500));
+            _occupied.setText("This room is free");
+            _occupied.setTextColor(getResources().getColor(R.color.green_500));
         }
         this.terms = room.getTerms();
         weekView.notifyDatasetChanged();

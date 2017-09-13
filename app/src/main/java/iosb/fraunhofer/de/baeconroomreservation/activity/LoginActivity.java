@@ -18,6 +18,7 @@ package iosb.fraunhofer.de.baeconroomreservation.activity;
  import butterknife.ButterKnife;
  import butterknife.BindView ;
  import iosb.fraunhofer.de.baeconroomreservation.R;
+ import iosb.fraunhofer.de.baeconroomreservation.entity.LoginResponse;
  import iosb.fraunhofer.de.baeconroomreservation.rest.Communicator;
 
 public class LoginActivity extends AccountAuthenticatorActivity
@@ -77,7 +78,7 @@ public class LoginActivity extends AccountAuthenticatorActivity
         new MyTask().execute();
     }
 
-    private class MyTask extends AsyncTask<String, Integer, String>
+    private class MyTask extends AsyncTask<String, Integer, LoginResponse>
     {
         Boolean success;
         @Override
@@ -90,15 +91,15 @@ public class LoginActivity extends AccountAuthenticatorActivity
         }
 
         @Override
-        protected String doInBackground(String... params)
+        protected LoginResponse doInBackground(String... params)
         {
             success = Communicator.loginPost(email, password);
-            return Communicator.token;
+            return new LoginResponse(Communicator.token, Communicator.admin);
         }
 
         // This runs in UI when background thread finishes
         @Override
-        protected void onPostExecute(String result) {
+        protected void onPostExecute(LoginResponse result) {
             super.onPostExecute(result);
             progress.dismiss();
             if (success)
@@ -111,10 +112,11 @@ public class LoginActivity extends AccountAuthenticatorActivity
         }
     }
 
-    private void onLoginSucces(String token)
+    private void onLoginSucces(LoginResponse result)
     {
-        createAccount(email, password, token);
+        createAccount(email, password, result.getToken(), result.isAdmin());
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        setAccountAuthenticatorResult(intent.getExtras());
         startActivityForResult(intent, REQUEST_SIGNUP);
     }
 
@@ -167,11 +169,19 @@ public class LoginActivity extends AccountAuthenticatorActivity
         return valid;
     }
 
-    public void createAccount(String email, String password, String authToken)
+    public void createAccount(String email, String password, String authToken, boolean admin)
     {
         Account account = new Account(email, "iosb.fraunhofer.de.baeconroomreservation");
         AccountManager am = AccountManager.get(this);
         am.addAccountExplicitly(account, password, null);
-        am.setAuthToken(account, "full_access", authToken);
+        if(admin)
+        {
+            am.setUserData(account, "ADMIN", "true");
+            am.setAuthToken(account, "full_access", authToken);
+        }
+        else {
+            am.setUserData(account, "ADMIN", "false");
+            am.setAuthToken(account, "read_only", authToken);
+        }
     }
 }

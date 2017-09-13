@@ -7,6 +7,11 @@
             android:id="@+id/nav_example"
             android:icon="@drawable/ic_menu_home"
             android:title="@string/action_main" />
+        <item
+            android:id="@+id/nav_admin"
+            android:icon="@drawable/ic_menu_help"
+            android:visible="false"
+            android:title="@string/room_screen" />
     </group>
 
     <group android:id="@+id/nav_group_add"

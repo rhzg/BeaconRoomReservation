@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 
 import iosb.fraunhofer.de.baeconroomreservation.activity.LoginActivity;
+import iosb.fraunhofer.de.baeconroomreservation.activity.MainActivity;
 import iosb.fraunhofer.de.baeconroomreservation.rest.Communicator;
 
 /**
@@ -43,7 +44,7 @@ public class Authenticator extends AbstractAccountAuthenticator
         intent.putExtra("iosb.fraunhofer.de.baeconroomreservation", accountType);
 
         // This key can be anything too. It's just a way of identifying the token's type (used when there are multiple permissions)
-        intent.putExtra("full_access", authTokenType);
+        intent.putExtra("TOKEN_TYPE", authTokenType);
 
         // This key can be anything too. Used for your reference. Can skip it too.
         intent.putExtra("is_adding_new_account", true);
@@ -66,32 +67,45 @@ public class Authenticator extends AbstractAccountAuthenticator
     public Bundle getAuthToken(AccountAuthenticatorResponse response, Account account, String authTokenType, Bundle bundle) throws NetworkErrorException {
 
         AccountManager am = AccountManager.get(mContext);
+        authTokenType = "full_access";
 
         String authToken = am.peekAuthToken(account, authTokenType);
+        boolean admin = true;
 
-        if (TextUtils.isEmpty(authToken)) {
-            Communicator.loginPost(account.name, am.getPassword(account));
-            authToken = Communicator.token;
+        if (authTokenType.equals("full_access") && TextUtils.isEmpty(authToken))
+        {
+            authTokenType = "read_only";
+            authToken = am.peekAuthToken(account, authTokenType);
+            if (TextUtils.isEmpty(authToken)) {
+                boolean success = Communicator.loginPost(account.name, am.getPassword(account));
+                if(success)
+                {
+                    authToken = Communicator.token;
+                    admin = Communicator.admin;
+                }
+            }else
+            {
+                admin = false;
+            }
         }
-
 
         if (!TextUtils.isEmpty(authToken)) {
             final Bundle result = new Bundle();
             result.putString(AccountManager.KEY_ACCOUNT_NAME, account.name);
             result.putString(AccountManager.KEY_ACCOUNT_TYPE, account.type);
             result.putString(AccountManager.KEY_AUTHTOKEN, authToken);
+            result.putBoolean("ADMIN", admin);
             return result;
         }
 
         final Intent intent = new Intent(mContext, LoginActivity.class);
         intent.putExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE, response);
-        intent.putExtra("iosb.fraunhofer.de.baeconroomreservation", account.type);
-        intent.putExtra("full_access", authTokenType);
+        intent.putExtra("iosb.fraunfsafhofer.de.baeconroomreservation", account.type);
+        intent.putExtra("TOKEN_TYPE", authTokenType);
 
         Bundle retBundle = new Bundle();
         retBundle.putParcelable(AccountManager.KEY_INTENT, intent);
         return retBundle;
-
     }
 
     @Override

@@ -23,4 +23,5 @@
     <string name="phone_number">Phone number:</string>
     <string name="email">Email:</string>
     <string name="occupied">OCCUPIED</string>
+    <string name="room_screen">Room screen</string>
 </resources>

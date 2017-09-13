@@ -3,10 +3,10 @@ package iosb.fraunhofer.de.baeconroomreservation.activity;
 import android.Manifest;
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.accounts.AccountManagerCallback;
 import android.accounts.AccountManagerFuture;
 import android.accounts.AuthenticatorException;
 import android.accounts.OperationCanceledException;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -17,6 +17,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 
 import java.io.IOException;
 
@@ -30,8 +31,8 @@ public class MainActivity extends BaseActivity
 {
     private static final String TAG = "MainActivity";
     private static final int PERMISSIONS_REQUEST_CODE = 1111;
-    private static final String AUTH_TOKEN_TYPE = "iosb.fraunhofer.de.baeconroomreservation";
-    private static final String AUTH_TOKEN_TYPE_ACC = "full_access";
+    private static final String ACCOUNT_TYPE = "iosb.fraunhofer.de.baeconroomreservation";
+    private static final String AUTH_TOKEN_TYPE_ACC_REG = "read_only";
     private BottomNavigationView bottomNavigationView;
 
     @Override
@@ -49,13 +50,16 @@ public class MainActivity extends BaseActivity
             @Override
             protected Boolean doInBackground(Void... params) {
                 AccountManager am = AccountManager.get(getApplicationContext());
-                Account[] accounts = am.getAccountsByType(AUTH_TOKEN_TYPE);
+                Account[] accounts = am.getAccountsByType(ACCOUNT_TYPE);
                 Account account;
                 if (accounts.length > 0) {
                     account = accounts[0];
-                    AccountManagerFuture<Bundle> response = am.getAuthToken(account, AUTH_TOKEN_TYPE_ACC, null, getParent(), null, null);
+                    AccountManagerFuture<Bundle> response;
+                    am.invalidateAuthToken(ACCOUNT_TYPE,Communicator.token);
+                    response = am.getAuthToken(account, AUTH_TOKEN_TYPE_ACC_REG, null, MainActivity.this, null, null);
                     try {
                         Bundle b = response.getResult();
+                        Communicator.admin = Boolean.parseBoolean(am.getUserData(account, "ADMIN"));
                         Communicator.token = b.getString(AccountManager.KEY_AUTHTOKEN);
                         Communicator.setContext(getApplicationContext());
                         return true;
@@ -65,8 +69,7 @@ public class MainActivity extends BaseActivity
                 }
                 else
                 {
-                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                    startActivity(intent);
+                    am.addAccount(ACCOUNT_TYPE, AUTH_TOKEN_TYPE_ACC_REG, null, null, MainActivity.this, null, null);
                 }
                 return false;
             }
@@ -77,6 +80,7 @@ public class MainActivity extends BaseActivity
                 if(start)
                 {
                     setNavigationListener();
+                    checkIfAdmin();
                     getSupportFragmentManager()
                             .beginTransaction()
                             .replace(R.id.root_layout, RoomListFragment.instanceOf(false))
@@ -93,6 +97,12 @@ public class MainActivity extends BaseActivity
         bottomNavigationView = (BottomNavigationView)
                 findViewById(R.id.bottom_navigation);
 
+    }
+
+    private void checkIfAdmin()
+    {
+        MenuItem item = mNavigationView.getMenu().findItem(R.id.nav_admin);
+        item.setVisible(Communicator.admin);
     }
 
     @Override
