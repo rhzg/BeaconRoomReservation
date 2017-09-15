@@ -24,6 +24,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import iosb.fraunhofer.de.baeconroomreservation.activity.BasicActivty;
+import iosb.fraunhofer.de.baeconroomreservation.activity.MainActivity;
 import iosb.fraunhofer.de.baeconroomreservation.activity.RoomDetailsActivity;
 import iosb.fraunhofer.de.baeconroomreservation.activity.RoomReservationActivity;
 import iosb.fraunhofer.de.baeconroomreservation.activity.TermDetailsActivity;
@@ -43,6 +45,7 @@ import iosb.fraunhofer.de.baeconroomreservation.entity.TermDetails;
 import iosb.fraunhofer.de.baeconroomreservation.entity.UserDetailsRepresentation;
 import iosb.fraunhofer.de.baeconroomreservation.entity.UserRepresentation;
 import iosb.fraunhofer.de.baeconroomreservation.fragments.CalendarFragment;
+import iosb.fraunhofer.de.baeconroomreservation.fragments.PickRoomFragment;
 import iosb.fraunhofer.de.baeconroomreservation.fragments.RoomListFragment;
 import iosb.fraunhofer.de.baeconroomreservation.fragments.SearchFragment;
 import okhttp3.OkHttpClient;
@@ -66,11 +69,11 @@ public class Communicator
     private static APIterface service;
     private static Context context = null;
     private static final String AUTH_TOKEN_TYPE = "iosb.fraunhofer.de.baeconroomreservation";
-
+    private static final String AUTH_TOKEN_TYPE_ACC_REG = "read_only";
 
     private static APIterface loginService;
     //TODO IP adrress
-    private static final String SERVER_URL = "http://192.168.42.10";
+    private static final String SERVER_URL = "http://192.168.42.66";
 
     private static void initalizator()
     {
@@ -518,11 +521,41 @@ public class Communicator
         });
     }
 
+    public static void searchRooms(String query, final PickRoomFragment pickRoomFragment)
+    {
+        if(service == null) {initalizator();}
+
+        SearchRequest searchRequest = new SearchRequest(query);
+
+        Call<List<UserRepresentation>> call = service.postSearchRooms(searchRequest);
+
+        call.enqueue(new Callback<List<UserRepresentation>>() {
+            @Override
+            public void onResponse(Call<List<UserRepresentation>> call, Response<List<UserRepresentation>> response)
+            {
+                if (response.code() == 200)
+                {
+                    pickRoomFragment.updateList(response.body());
+                }
+                else if(response.code() == 403)
+                {
+                    goToLogin();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<UserRepresentation>> call, Throwable t) {
+
+            }
+        });
+    }
+
     public static void goToLogin()
     {
         Toast.makeText(context, "Token expired",
                 Toast.LENGTH_SHORT).show();
-        AccountManager.get(context).invalidateAuthToken(AUTH_TOKEN_TYPE, token);
+        AccountManager am = AccountManager.get(context);
+        am.invalidateAuthToken(AUTH_TOKEN_TYPE, token);
     }
 
     public static void setContext(Context context) {
@@ -559,7 +592,7 @@ public class Communicator
         });
     }
 
-    public static void getRoomDetails(String room_id, final RoomDetailsActivity roomDetailsActivity)
+    public static void getRoomDetails(String room_id, final BasicActivty activty)
     {
         if(service == null) {initalizator();}
 
@@ -573,7 +606,7 @@ public class Communicator
             {
                 if (response.code() == 200)
                 {
-                    roomDetailsActivity.setDetails(response.body());
+                    activty.setDetails(response.body());
                 }
                 else if(response.code() == 403)
                 {

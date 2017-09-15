@@ -26,7 +26,6 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -36,7 +35,10 @@
         <activity android:name="iosb.fraunhofer.de.baeconroomreservation.activity.TermDetailsActivity" android:theme="@style/AppTheme" />
         <activity android:name="iosb.fraunhofer.de.baeconroomreservation.activity.RoomDetailsActivity" android:theme="@style/AppTheme" />
         <activity android:name="iosb.fraunhofer.de.baeconroomreservation.activity.UserDetailsActivity" android:theme="@style/AppTheme" />
-        <activity android:name="iosb.fraunhofer.de.baeconroomreservation.activity.admin.RoomStatusActivity" android:theme="@style/AppTheme" />
+        <activity android:name="iosb.fraunhofer.de.baeconroomreservation.activity.admin.PickRoomActivity" android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name="iosb.fraunhofer.de.baeconroomreservation.activity.admin.RoomStatusActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" android:screenOrientation="landscape"/>
+        <activity android:name="iosb.fraunhofer.de.baeconroomreservation.activity.admin.RoomStatusCalendarActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" android:screenOrientation="landscape"/>
+
         <service android:name="iosb.fraunhofer.de.baeconroomreservation.service.AuthenticatorService">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
@@ -45,7 +47,7 @@
         </service>
 
     </application>
-
+    <uses-permission android:name="android.permission.NFC" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.BLUETOOTH" />

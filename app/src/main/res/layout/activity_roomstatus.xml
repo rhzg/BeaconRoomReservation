@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root_layout"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1.0">
+
+    <TextView
+        android:id="@+id/occupied"
+        android:background="@color/green_500"
+        android:text="This room is available"
+        android:textColor="@color/grey_100"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.9"
+        android:layout_margin="5dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:weightSum="1.0"
+        android:layout_weight="0.1">
+
+        <Button
+            android:id="@+id/reserveButton"
+            android:layout_width="0dp"
+            android:text="Quick date"
+            android:background="@color/grey_300"
+            android:layout_height="match_parent"
+            android:layout_weight="0.1"
+            android:layout_margin="5dp"/>
+
+        <TextView
+            android:id="@+id/untilTime"
+            android:layout_width="0dp"
+            android:layout_weight="0.9"
+            android:gravity="center"
+            android:background="@color/green_500"
+            android:textColor="@color/grey_100"
+            android:text="Until:  21:40 14-40-2017"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"/>
+
+
+    </LinearLayout>
+
+</LinearLayout>

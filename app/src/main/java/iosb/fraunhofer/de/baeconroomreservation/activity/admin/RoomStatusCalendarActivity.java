@@ -1,4 +1,4 @@
-package iosb.fraunhofer.de.baeconroomreservation.activity;
+package iosb.fraunhofer.de.baeconroomreservation.activity.admin;
 
 import android.content.Intent;
 import android.content.res.Resources;
@@ -8,8 +8,6 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
 import com.alamkanak.weekview.MonthLoader;
 import com.alamkanak.weekview.WeekView;
@@ -26,6 +24,8 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import iosb.fraunhofer.de.baeconroomreservation.R;
+import iosb.fraunhofer.de.baeconroomreservation.activity.BasicActivty;
+import iosb.fraunhofer.de.baeconroomreservation.activity.RoomReservationActivity;
 import iosb.fraunhofer.de.baeconroomreservation.adapters.Event;
 import iosb.fraunhofer.de.baeconroomreservation.entity.RoomDetailsRepresentation;
 import iosb.fraunhofer.de.baeconroomreservation.entity.Term;
@@ -33,28 +33,22 @@ import iosb.fraunhofer.de.baeconroomreservation.rest.Communicator;
 
 /**
  *
- * Created by sakovi on 08.09.2017.
+ * Created by sakovi on 15.09.2017.
  */
 
-public class RoomDetailsActivity extends BasicActivty implements WeekView.EventClickListener, MonthLoader.MonthChangeListener, WeekView.EventLongPressListener, WeekView.EmptyViewLongPressListener, WeekViewLoader
+public class RoomStatusCalendarActivity extends BasicActivty implements WeekView.EventClickListener, MonthLoader.MonthChangeListener, WeekView.EventLongPressListener, WeekView.EmptyViewLongPressListener, WeekViewLoader
 {
-    @BindView(R.id.weekView) WeekView weekView;
-    @BindView(R.id.occupied) TextView _occupied;
-    @BindView(R.id.action_favorite) Button _btnFavorite;
     @BindView(R.id.fab) FloatingActionButton _fab;
-
-
+    @BindView(R.id.weekView) WeekView weekView;
     private List<Term> terms = new ArrayList<>();
+
 
     @Override
     protected void onCreate(final Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_room_details);
+        setContentView(R.layout.activity_status_calendar);
         ButterKnife.bind(this);
-
-        getSupportActionBar().setTitle(getIntent().getStringExtra("ROOM_NAME"));
-        Communicator.getRoomDetails(getIntent().getStringExtra("ROOM_ID"), this);
 
         weekView.setOnEventClickListener(this);
         weekView.setMonthChangeListener(this);
@@ -62,6 +56,8 @@ public class RoomDetailsActivity extends BasicActivty implements WeekView.EventC
         weekView.setEmptyViewLongPressListener(this);
         weekView.setWeekViewLoader(this);
         weekView.goToHour(new Date().getHours());
+
+        Communicator.getRoomDetails(getIntent().getStringExtra("ROOM_ID"), this);
 
         _fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,19 +68,10 @@ public class RoomDetailsActivity extends BasicActivty implements WeekView.EventC
                 startActivity(intent);
             }
         });
-
-        _btnFavorite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v)
-            {
-                Communicator.makeFavorite(getIntent().getStringExtra("ROOM_ID"), RoomDetailsActivity.this);
-            }
-        });
     }
 
     @Override
-    public List<? extends WeekViewEvent> onMonthChange(int newYear, int newMonth)
-    {
+    public List<? extends WeekViewEvent> onMonthChange(int newYear, int newMonth) {
         List<WeekViewEvent> weekViewEvents = new ArrayList<>();
         return weekViewEvents;
     }
@@ -112,8 +99,7 @@ public class RoomDetailsActivity extends BasicActivty implements WeekView.EventC
     }
 
     @Override
-    public List<? extends WeekViewEvent> onLoad(int periodIndex)
-    {
+    public List<? extends WeekViewEvent> onLoad(int periodIndex) {
         List<Event> weekViewEvents = new ArrayList<>();
         Resources res = getResources();
         TypedArray colorsRes = res.obtainTypedArray(R.array.calendarColors);
@@ -140,30 +126,14 @@ public class RoomDetailsActivity extends BasicActivty implements WeekView.EventC
                 weekViewEvents.add(weekViewEvent);
             }
         }
-        return weekViewEvents;    }
-
+        return weekViewEvents;
+    }
 
     @Override
     public void setDetails(RoomDetailsRepresentation room)
     {
-        if(room.isFavorite())
-        {
-            _btnFavorite.setBackgroundResource(R.drawable.star_on);
-        }else
-        {
-            _btnFavorite.setBackgroundResource(R.drawable.star_off);
-        }
-
-        if (room.isOccupied())
-        {
-            _occupied.setText("This room is occupied");
-            _occupied.setTextColor(getResources().getColor(R.color.red_500));
-        }else
-        {
-            _occupied.setText("This room is free");
-            _occupied.setTextColor(getResources().getColor(R.color.green_500));
-        }
         this.terms = room.getTerms();
         weekView.notifyDatasetChanged();
     }
+
 }

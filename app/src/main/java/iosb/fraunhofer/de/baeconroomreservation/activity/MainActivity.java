@@ -99,12 +99,6 @@ public class MainActivity extends BaseActivity
 
     }
 
-    private void checkIfAdmin()
-    {
-        MenuItem item = mNavigationView.getMenu().findItem(R.id.nav_admin);
-        item.setVisible(Communicator.admin);
-    }
-
     @Override
     protected int getNavigationDrawerID() {
         return R.id.nav_example;

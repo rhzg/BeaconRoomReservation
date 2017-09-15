@@ -20,6 +20,8 @@ import android.view.MenuItem;
 import android.view.View;
 
 import iosb.fraunhofer.de.baeconroomreservation.R;
+import iosb.fraunhofer.de.baeconroomreservation.activity.admin.PickRoomActivity;
+import iosb.fraunhofer.de.baeconroomreservation.rest.Communicator;
 
 
 /**
@@ -137,6 +139,10 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
                 intent = new Intent(this, MainActivity.class);
                 createBackStack(intent);
                 break;
+            case R.id.nav_admin:
+                intent = new Intent(this, PickRoomActivity.class);
+                createBackStack(intent);
+                break;
             case R.id.nav_sign_out:
                 AccountManager am = AccountManager.get(getApplicationContext());
                 am.removeAccountExplicitly(am.getAccountsByType(AUTH_TOKEN_TYPE)[0]);
@@ -172,6 +178,12 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
             mainContent.setAlpha(0);
             mainContent.animate().alpha(1).setDuration(MAIN_CONTENT_FADEIN_DURATION);
         }
+    }
+
+    protected void checkIfAdmin()
+    {
+        MenuItem item = mNavigationView.getMenu().findItem(R.id.nav_admin);
+        item.setVisible(Communicator.admin);
     }
 
 

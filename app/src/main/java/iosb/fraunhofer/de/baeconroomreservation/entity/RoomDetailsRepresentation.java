@@ -1,9 +1,11 @@
 package iosb.fraunhofer.de.baeconroomreservation.entity;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
+ *
  * Created by sakovi on 08.09.2017.
  */
 
@@ -14,6 +16,8 @@ public class RoomDetailsRepresentation
     private boolean occupied;
 
     private List<Term> terms = new ArrayList<>();
+
+    private Date until;
 
     public RoomDetailsRepresentation(){}
 
@@ -45,5 +49,13 @@ public class RoomDetailsRepresentation
 
     public List<Term> getTerms() {
         return terms;
+    }
+
+    public Date getUntil() {
+        return until;
+    }
+
+    public void setUntil(Date until) {
+        this.until = until;
     }
 }
