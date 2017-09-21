@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
-        tools:context="iosb.fraunhofer.de.baeconroomreservation.activity.admin.PickRoomActivity">
+        tools:context="de.iosb.fraunhofer.baeconroomreservation.activity.admin.PickRoomActivity">
 
 
         <include layout="@layout/toolbar"/>
@@ -27,13 +27,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            tools:context="iosb.fraunhofer.de.baeconroomreservation.activity.admin.PickRoomActivity"
+            tools:context="de.iosb.fraunhofer.baeconroomreservation.activity.admin.PickRoomActivity"
             tools:showIn="@layout/activity_pickroom"
             android:orientation="vertical">
 
             <fragment
                 android:id="@+id/fragment1"
-                android:name="iosb.fraunhofer.de.baeconroomreservation.fragments.PickRoomFragment"
+                android:name="de.iosb.fraunhofer.baeconroomreservation.fragments.PickRoomFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 

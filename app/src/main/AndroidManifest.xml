@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="iosb.fraunhofer.de.baeconroomreservation">
+    package="de.iosb.fraunhofer.baeconroomreservation">
 
     <uses-permission
         android:name="android.permission.AUTHENTICATE_ACCOUNTS"
@@ -22,24 +22,25 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.MainActivity"
+        <activity android:name="de.iosb.fraunhofer.baeconroomreservation.activity.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="iosb.fraunhofer.de.baeconroomreservation.activity.SignupActivity" android:theme="@style/AppTheme" />
-        <activity android:name="iosb.fraunhofer.de.baeconroomreservation.activity.LoginActivity" android:theme="@style/AppTheme" />
-        <activity android:name="iosb.fraunhofer.de.baeconroomreservation.activity.RoomReservationActivity" android:theme="@style/AppTheme" />
-        <activity android:name="iosb.fraunhofer.de.baeconroomreservation.activity.TermDetailsActivity" android:theme="@style/AppTheme" />
-        <activity android:name="iosb.fraunhofer.de.baeconroomreservation.activity.RoomDetailsActivity" android:theme="@style/AppTheme" />
-        <activity android:name="iosb.fraunhofer.de.baeconroomreservation.activity.UserDetailsActivity" android:theme="@style/AppTheme" />
-        <activity android:name="iosb.fraunhofer.de.baeconroomreservation.activity.admin.PickRoomActivity" android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name="iosb.fraunhofer.de.baeconroomreservation.activity.admin.RoomStatusActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" android:screenOrientation="landscape"/>
-        <activity android:name="iosb.fraunhofer.de.baeconroomreservation.activity.admin.RoomStatusCalendarActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" android:screenOrientation="landscape"/>
+        <activity android:name="de.iosb.fraunhofer.baeconroomreservation.activity.SignupActivity" android:theme="@style/AppTheme" />
+        <activity android:name="de.iosb.fraunhofer.baeconroomreservation.activity.LoginActivity" android:theme="@style/AppTheme" />
+        <activity android:name="de.iosb.fraunhofer.baeconroomreservation.activity.RoomReservationActivity" android:theme="@style/AppTheme" />
+        <activity android:name="de.iosb.fraunhofer.baeconroomreservation.activity.TermDetailsActivity" android:theme="@style/AppTheme" />
+        <activity android:name="de.iosb.fraunhofer.baeconroomreservation.activity.RoomDetailsActivity" android:theme="@style/AppTheme" />
+        <activity android:name="de.iosb.fraunhofer.baeconroomreservation.activity.UserDetailsActivity" android:theme="@style/AppTheme" />
+        <activity android:name="de.iosb.fraunhofer.baeconroomreservation.activity.admin.PickRoomActivity" android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name="de.iosb.fraunhofer.baeconroomreservation.activity.admin.RoomStatusActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" android:screenOrientation="landscape" android:keepScreenOn="true"/>
+        <activity android:name="de.iosb.fraunhofer.baeconroomreservation.activity.admin.RoomStatusCalendarActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" android:screenOrientation="landscape"/>
+        <activity android:name="de.iosb.fraunhofer.baeconroomreservation.activity.admin.AuthorizeActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" android:screenOrientation="landscape"/>
 
-        <service android:name="iosb.fraunhofer.de.baeconroomreservation.service.AuthenticatorService">
+        <service android:name="de.iosb.fraunhofer.baeconroomreservation.service.AuthenticatorService">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
