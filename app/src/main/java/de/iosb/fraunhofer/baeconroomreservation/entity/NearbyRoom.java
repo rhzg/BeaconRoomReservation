@@ -25,11 +25,11 @@ public class NearbyRoom implements Serializable
         this.distance = distance;
     }
 
-    public String getBLEid() {
+    public String getId() {
         return id;
     }
 
-    public void setBLEid(String BLEid) {
-        this.id = BLEid;
+    public void setId(String id) {
+        this.id = id;
     }
 }

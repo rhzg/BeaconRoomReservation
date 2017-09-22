@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -225,7 +226,7 @@ public class Communicator
                     roomOverview.addAll(response.body());
                     for(RoomOverview response1: roomOverview)
                     {
-                        Beacon beacon = beaconMap.get(response1.getRoomID());
+                        Beacon beacon = beaconMap.get(response1.getBleId());
                         response1.setDistance(beacon.getDistance());
                     }
                     RoomListFragment.adapter.setList((ArrayList<RoomOverview>) roomOverview);
@@ -526,11 +527,15 @@ public class Communicator
                     roomOverview.addAll(response.body());
                     for(RoomOverview response1: roomOverview)
                     {
-
-                        Beacon beacon = beaconMap.get(response1.getRoomID());
-                        if(beacon != null)
+                        double distance = 1000;
+                        for (String bleId : response1.getBleIds())
                         {
-                            response1.setDistance(beacon.getDistance());
+                            Beacon beacon = beaconMap.get(bleId);
+                            if(beacon != null && (beacon.getDistance() < distance))
+                            {
+                                distance = beacon.getDistance();
+                                response1.setDistance(beacon.getDistance());
+                            }
                         }
                     }
                     RoomListFragment.adapter.setList((ArrayList<RoomOverview>) roomOverview);

@@ -1,6 +1,9 @@
 package de.iosb.fraunhofer.baeconroomreservation.entity;
 
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  *
  * @author Viseslav Sako
@@ -22,12 +25,19 @@ public class RoomOverview
 
     private String name;
 
-    public RoomOverview(String roomID, Boolean occupied, String from, String until, String name) {
+    private String bleId;
+
+    private Set<String> bleIds = new HashSet<>();
+
+    public RoomOverview(String roomID, Boolean occupied, Boolean favorite, double distance, String from, String until, String name, String bleId) {
         this.roomID = roomID;
         this.occupied = occupied;
+        this.favorite = favorite;
+        this.distance = distance;
         this.from = from;
         this.until = until;
         this.name = name;
+        this.bleId = bleId;
     }
 
     public RoomOverview() {
@@ -87,5 +97,21 @@ public class RoomOverview
 
     public void setDistance(double distance) {
         this.distance = distance;
+    }
+
+    public String getBleId() {
+        return bleId;
+    }
+
+    public void setBleId(String bleId) {
+        this.bleId = bleId;
+    }
+
+    public Set<String> getBleIds() {
+        return bleIds;
+    }
+
+    public void setBleIds(Set<String> bleIds) {
+        this.bleIds = bleIds;
     }
 }
