@@ -1,19 +1,20 @@
 package de.iosb.fraunhofer.baeconroomreservation.entity;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Viseslav Sako
  */
-
-public class NearbyRooms
+public class NearbyRoom implements Serializable
 {
     private double distance;
 
-    private String BLEid;
+    private String id;
 
-    public NearbyRooms(double distance, String BLEid) {
+    public NearbyRoom(double distance, String id) {
         this.distance = distance;
-        this.BLEid = BLEid;
+        this.id = id;
     }
 
     public double getDistance() {
@@ -25,10 +26,10 @@ public class NearbyRooms
     }
 
     public String getBLEid() {
-        return BLEid;
+        return id;
     }
 
     public void setBLEid(String BLEid) {
-        this.BLEid = BLEid;
+        this.id = BLEid;
     }
 }

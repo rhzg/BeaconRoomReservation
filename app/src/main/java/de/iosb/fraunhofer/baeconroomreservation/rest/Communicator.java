@@ -37,6 +37,7 @@ import de.iosb.fraunhofer.baeconroomreservation.auth.TokenAuthInterceptor;
 import de.iosb.fraunhofer.baeconroomreservation.entity.LoginRequest;
 import de.iosb.fraunhofer.baeconroomreservation.entity.LoginResponse;
 import de.iosb.fraunhofer.baeconroomreservation.entity.NearbyRequest;
+import de.iosb.fraunhofer.baeconroomreservation.entity.NearbyRoom;
 import de.iosb.fraunhofer.baeconroomreservation.entity.RoomOverview;
 import de.iosb.fraunhofer.baeconroomreservation.entity.QuickRoomReservationRequest;
 import de.iosb.fraunhofer.baeconroomreservation.entity.ReservationResponse;
@@ -198,21 +199,22 @@ public class Communicator
      * @param beacons    collection of beacons that where found with scanning
      * @return  list of all nearby rooms
      */
+    //TODO distance
     public static List<RoomOverview> nearbyPost(Collection<Beacon> beacons)
     {
         if(service == null) {initalizator();}
 
-        ArrayList<String> idList = new ArrayList<>();
+        ArrayList<NearbyRoom> nearbyRooms = new ArrayList<>();
         final List<RoomOverview> roomOverview = new ArrayList<>();
         final Map<String, Beacon> beaconMap = new HashMap<>();
 
         for(Beacon beacon:beacons)
         {
             beaconMap.put(beacon.getBluetoothName(), beacon);
-            idList.add(beacon.getBluetoothName());
+            nearbyRooms.add(new NearbyRoom(beacon.getDistance() ,beacon.getBluetoothName()));
         }
 
-        Call<List<RoomOverview>> call = service.postNerby(new NearbyRequest(idList));
+        Call<List<RoomOverview>> call = service.postNerby(new NearbyRequest(nearbyRooms));
 
         call.enqueue(new Callback<List<RoomOverview>>() {
             @Override

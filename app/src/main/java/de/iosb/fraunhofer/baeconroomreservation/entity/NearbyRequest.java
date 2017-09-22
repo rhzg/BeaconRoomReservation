@@ -9,14 +9,13 @@ import java.util.ArrayList;
  *
  * @author Viseslav Sako
  */
-
 public class NearbyRequest
 {
     @SerializedName("ids")
     @Expose
-    private ArrayList<String> ids;
+    private ArrayList<NearbyRoom> ids;
 
-    public NearbyRequest(ArrayList<String> ids) {
+    public NearbyRequest(ArrayList<NearbyRoom> ids) {
         this.ids = ids;
     }
 }
