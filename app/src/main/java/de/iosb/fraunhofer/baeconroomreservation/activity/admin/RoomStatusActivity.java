@@ -31,7 +31,6 @@ import de.iosb.fraunhofer.baeconroomreservation.rest.Communicator;
  */
 public class RoomStatusActivity extends BasicActivity
 {
-    private static final String AUTH_TOKEN_TYPE = "de.fraunhofer.iosb.baeconroomreservation";
     private static final long refreshInterval = 5;
 
     @BindView(R.id.occupied) TextView _occupied;
@@ -45,7 +44,7 @@ public class RoomStatusActivity extends BasicActivity
     protected void onCreate(final Bundle savedInstanceState)
     {
         AccountManager am = AccountManager.get(this);
-        Account accounts[] = am.getAccountsByType(AUTH_TOKEN_TYPE);
+        Account accounts[] = am.getAccountsByType(Constants.ACCOUNT_TYPE);
         if(accounts.length != 0)
         {
             Account account = accounts[0];

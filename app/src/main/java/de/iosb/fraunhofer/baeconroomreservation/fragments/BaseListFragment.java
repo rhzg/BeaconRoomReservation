@@ -1,7 +1,5 @@
 package de.iosb.fraunhofer.baeconroomreservation.fragments;
 
-import android.support.v4.app.ListFragment;
-
 import java.util.List;
 
 import de.iosb.fraunhofer.baeconroomreservation.entity.EntityRepresentation;
@@ -12,12 +10,12 @@ import de.iosb.fraunhofer.baeconroomreservation.entity.EntityRepresentation;
  * Created by Viseslav Sako
  */
 
-public abstract class BaseListFragment extends ListFragment
+public interface BaseListFragment
 {
 
     /**
      * This method is called when the list view must be update with new elements.
      * @param body list of new elements.
      */
-    public void updateList(List<EntityRepresentation> body) {}
+     void updateList(List<EntityRepresentation> body);
 }

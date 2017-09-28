@@ -183,4 +183,8 @@ public class RoomListFragment extends ListFragment implements BeaconConsumer
     {
         return getActivity().bindService(intent, serviceConnection, i);
     }
+
+    public boolean isFavorite() {
+        return favorite;
+    }
 }

@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,7 +28,7 @@ import de.iosb.fraunhofer.baeconroomreservation.Constants;
 import de.iosb.fraunhofer.baeconroomreservation.R;
 import de.iosb.fraunhofer.baeconroomreservation.activity.admin.AuthorizeActivity;
 import de.iosb.fraunhofer.baeconroomreservation.entity.EntityRepresentation;
-import de.iosb.fraunhofer.baeconroomreservation.fragments.CheckBoxDialogFragment;
+import de.iosb.fraunhofer.baeconroomreservation.fragments.PickUserFragment;
 import de.iosb.fraunhofer.baeconroomreservation.fragments.DatePickerFragment;
 import de.iosb.fraunhofer.baeconroomreservation.fragments.TimePickerFragment;
 import de.iosb.fraunhofer.baeconroomreservation.rest.Communicator;
@@ -44,20 +45,13 @@ public class RoomReservationActivity extends AppCompatActivity implements TimePi
     @BindView(R.id.startTime) TextView _startTime;
     @BindView(R.id.endTime) TextView _endTime;
     @BindView(R.id.title) EditText _title;
-    @BindView(R.id.users) EditText _users;
+    @BindView(R.id.users) TextView _users;
     @BindView(R.id.reserveButtin) Button _reserve;
     @BindView(R.id.date) TextView _date;
     private boolean start;
-    private ArrayList<EntityRepresentation> entityRepresentations;
+    private ArrayList<EntityRepresentation> entityRepresentations = new ArrayList<>();
     private ArrayList<String> sendIds;
-    private boolean[] checkedItems;
     CountDownTimer countDownTimer;
-
-    public void setEntityRepresentations(ArrayList<EntityRepresentation> entityRepresentations)
-    {
-        this.entityRepresentations = entityRepresentations;
-        checkedItems = new boolean[entityRepresentations.size()];
-    }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -69,13 +63,10 @@ public class RoomReservationActivity extends AppCompatActivity implements TimePi
         getSupportActionBar().setTitle(getIntent().getStringExtra(Constants.roomName));
         ButterKnife.bind(this);
 
-        Communicator.usersGet(this);
-
         sendIds = new ArrayList<>();
 
         initFields();
         _date.setShowSoftInputOnFocus(false);
-        _users.setShowSoftInputOnFocus(false);
         _startTime.setShowSoftInputOnFocus(false);
         _endTime.setShowSoftInputOnFocus(false);
 
@@ -93,7 +84,7 @@ public class RoomReservationActivity extends AppCompatActivity implements TimePi
             @Override
             public void onClick(View v)
             {
-                CheckBoxDialogFragment boxDialogFragment = CheckBoxDialogFragment.newInstance(checkedItems, entityRepresentations);
+                PickUserFragment boxDialogFragment = PickUserFragment.newInstance(entityRepresentations);
                 boxDialogFragment.setActivity(RoomReservationActivity.this);
                 boxDialogFragment.show(getSupportFragmentManager(), "users");
                 restartTimer();
@@ -157,8 +148,10 @@ public class RoomReservationActivity extends AppCompatActivity implements TimePi
 
     private void restartTimer()
     {
-        countDownTimer.cancel();
-        countDownTimer.start();
+        if(getIntent().getBooleanExtra(Constants.authorize, false)) {
+            countDownTimer.cancel();
+            countDownTimer.start();
+        }
     }
 
     public boolean validateInput()
@@ -217,10 +210,13 @@ public class RoomReservationActivity extends AppCompatActivity implements TimePi
         _startTime.setText(String.format("%02d", hour)+":"+String.format("%02d", minute));
         _date.setText(dayOfMonth+"."+(month+1)+"."+year);
 
-        countDownTimer = new CountDownTimer(Constants.timeout, Constants.countdownInterval) {
-            public void onTick(long millisUntilFinished) {}
-            public void onFinish() {finish();}
-        }.start();
+        if(getIntent().getBooleanExtra(Constants.authorize, false))
+        {
+            countDownTimer = new CountDownTimer(Constants.timeout, Constants.countdownInterval) {
+                public void onTick(long millisUntilFinished) {}
+                public void onFinish() {finish();}
+            }.start();
+        }
     }
 
     public void setUserText()
@@ -229,20 +225,26 @@ public class RoomReservationActivity extends AppCompatActivity implements TimePi
         sendIds.clear();
         for (int i = 0; i< entityRepresentations.size(); i++)
         {
-            if(checkedItems[i])
+            if(i == entityRepresentations.size()-1)
             {
-                _users.getText().append(entityRepresentations.get(i).getName()+", ");
-                sendIds.add(entityRepresentations.get(i).getUserID());
+                _users.append(entityRepresentations.get(i).getName());
+
+            }else
+            {
+                _users.append(entityRepresentations.get(i).getName()+", ");
             }
+            sendIds.add(entityRepresentations.get(i).getUserID());
         }
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event)
     {
-        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            countDownTimer.cancel();
-            countDownTimer.start();
+        if(getIntent().getBooleanExtra(Constants.authorize, false)) {
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                countDownTimer.cancel();
+                countDownTimer.start();
+            }
         }
         return super.onTouchEvent(event);
     }

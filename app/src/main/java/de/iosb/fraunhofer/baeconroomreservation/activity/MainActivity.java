@@ -39,9 +39,11 @@ public class MainActivity extends BaseActivity
     private static final int PERMISSIONS_REQUEST_CODE = 1111;
     private static final String AUTH_TOKEN_TYPE_ACC_REG = "read_only";
     private BottomNavigationView bottomNavigationView;
+    Fragment fragment;
+
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
+    protected void onCreate(final Bundle savedInstanceState)
     {
         if (!havePermissions()) {
             Log.i(TAG, "Requesting permissions needed for this app.");
@@ -84,13 +86,27 @@ public class MainActivity extends BaseActivity
             {
                 if(start)
                 {
-                    setNavigationListener();
-                    checkIfAdmin();
-                    getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.root_layout, RoomListFragment.instanceOf(false))
-                            .addToBackStack(null)
-                            .commit();
+                    fragment = RoomListFragment.instanceOf(false);
+
+                    if (savedInstanceState != null)
+                    {
+                        fragment = getSupportFragmentManager().getFragment(savedInstanceState, "myFragmentName");
+                        setNavigationListener();
+                        getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.root_layout, fragment)
+                                .commit();
+                    }
+                    else
+                    {
+                        setNavigationListener();
+                        checkIfAdmin();
+                        getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.root_layout, fragment)
+                                .addToBackStack(null)
+                                .commit();
+                    }
                 }
             }
         };
@@ -115,7 +131,6 @@ public class MainActivity extends BaseActivity
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                        Fragment fragment;
                         switch (item.getItemId()) {
                             case R.id.action_calendar:
                                 fragment = CalendarFragment.instanceOf();
@@ -152,5 +167,41 @@ public class MainActivity extends BaseActivity
     private void requestPermissions() {
         ActivityCompat.requestPermissions(this,
                 new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSIONS_REQUEST_CODE);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+       try {
+           getSupportFragmentManager().putFragment(outState, "myFragmentName", fragment);
+       }catch (NullPointerException e){
+
+       }
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        super.onBackPressed();
+        fragment = getSupportFragmentManager().findFragmentById(R.id.root_layout);
+        if(fragment instanceof CalendarFragment)
+        {
+            bottomNavigationView.setSelectedItemId(R.id.action_calendar);
+        }
+        else if(fragment instanceof SearchFragment)
+        {
+            bottomNavigationView.setSelectedItemId(R.id.action_search);
+        }
+        else if(fragment instanceof RoomListFragment)
+        {
+            if(((RoomListFragment) fragment).isFavorite())
+            {
+                bottomNavigationView.setSelectedItemId(R.id.action_favorite);
+            }else
+            {
+                bottomNavigationView.setSelectedItemId(R.id.action_nearby);
+            }
+        }
     }
 }

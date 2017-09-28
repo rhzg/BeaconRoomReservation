@@ -150,9 +150,9 @@ public class Communicator
 
         service = null;
 
-        String passHash = createHashPassword(password);
+//        String passHash = createHashPassword(password);
 
-        Call<LoginResponse> call = loginService.postLogin(new LoginRequest(username, passHash));
+        Call<LoginResponse> call = loginService.postLogin(new LoginRequest(username, password));
         try {
             Response<LoginResponse> loginResponse = call.execute();
             if(loginResponse.code() == 200)
@@ -168,32 +168,6 @@ public class Communicator
         return returnValue;
     }
 
-    /**
-     * Creates hashed password for plain password
-     * @param password plain password
-     * @return         hashed password
-     */
-    private static String createHashPassword(String password)
-    {
-        String generatedPassword = null;
-        try {
-            MessageDigest md = MessageDigest.getInstance("MD5");
-
-            md.update(password.getBytes());
-
-            byte[] bytes = md.digest();
-            StringBuilder sb = new StringBuilder();
-            for (byte aByte : bytes) {
-                sb.append(Integer.toString((aByte & 0xff) + 0x100, 16).substring(1));
-            }
-            generatedPassword = sb.toString();
-        }
-        catch (NoSuchAlgorithmException e)
-        {
-            e.printStackTrace();
-        }
-        return generatedPassword;
-    }
 
     /**
      * Get the list of all nearby rooms
@@ -402,31 +376,31 @@ public class Communicator
      * This method is used for getting all users.
      * @param roomReservationActivity activity where the call was made and where the list of user needs to be sent.
      */
-    public static void usersGet(final RoomReservationActivity roomReservationActivity)
-    {
-        Call<List<EntityRepresentation>> call = service.getUsers();
-
-        call.enqueue(new Callback<List<EntityRepresentation>>() {
-            @Override
-            public void onResponse(Call<List<EntityRepresentation>> call, Response<List<EntityRepresentation>> response)
-            {
-                if (response.code() == 200)
-                {
-                    roomReservationActivity.setEntityRepresentations((ArrayList<EntityRepresentation>) response.body());
-                }
-                else if(response.code() == 403)
-                {
-                    goToLogin();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<EntityRepresentation>> call, Throwable t)
-            {
-
-            }
-        });
-    }
+//    public static void usersGet(final RoomReservationActivity roomReservationActivity)
+//    {
+//        Call<List<EntityRepresentation>> call = service.getUsers();
+//
+//        call.enqueue(new Callback<List<EntityRepresentation>>() {
+//            @Override
+//            public void onResponse(Call<List<EntityRepresentation>> call, Response<List<EntityRepresentation>> response)
+//            {
+//                if (response.code() == 200)
+//                {
+//                    roomReservationActivity.setEntityRepresentations((ArrayList<EntityRepresentation>) response.body());
+//                }
+//                else if(response.code() == 403)
+//                {
+//                    goToLogin();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<List<EntityRepresentation>> call, Throwable t)
+//            {
+//
+//            }
+//        });
+//    }
 
     /**
      * Method for making the call for adding room to favorites or unfavorites.
@@ -665,7 +639,7 @@ public class Communicator
      * @param query pattern which is used for searching
      * @param searchFragment fragment where the results are shown
      */
-    public static void searchUsers(String query, final SearchFragment searchFragment)
+    public static void searchUsers(String query, final BaseListFragment searchFragment)
     {
         if(service == null) {initalizator();}
 

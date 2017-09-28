@@ -1,153 +1,160 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollView"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="1.0">
+    android:fillViewport="true" >
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.1"
-        android:layout_margin="5dp"
-        android:weightSum="1.0"
-        android:id="@+id/linearLayout">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:weightSum="1.0">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"
+            android:layout_margin="5dp"
+            android:weightSum="1.0"
+            android:id="@+id/linearLayout">
+
+            <TextView
+                android:layout_marginRight="5dp"
+                android:layout_width="0px"
+                android:layout_height="match_parent"
+                android:layout_weight=".4"
+                android:background="@color/primary"
+                android:textColor="@color/grey_200"
+                android:text="@string/start_time"
+                android:gravity="center"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <TextView
+                android:id="@+id/startTime"
+                android:layout_width="0px"
+                android:layout_height="match_parent"
+                android:layout_weight=".6"
+                android:background="@color/blue_grey_400"
+                android:text="12:00"
+                android:gravity="center"
+                android:textColor="@color/blue_300"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="5dp"
+            android:layout_weight="0.1"
+            android:orientation="horizontal"
+            android:weightSum="10"
+            android:id="@+id/linearLayout1">
+
+            <TextView
+                android:layout_marginRight="5dp"
+                android:layout_width="0px"
+                android:layout_height="match_parent"
+                android:layout_weight="4"
+                android:background="@color/primary"
+                android:textColor="@color/grey_200"
+                android:gravity="center"
+                android:text="@string/end_time"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <TextView
+                android:id="@+id/endTime"
+                android:layout_width="0px"
+                android:layout_height="match_parent"
+                android:layout_weight="6"
+                android:text="12:00"
+                android:gravity="center"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:background="@color/blue_grey_400"
+                android:textColor="@color/blue_300" />
+
+        </LinearLayout>
 
         <TextView
-            android:layout_marginRight="5dp"
-            android:layout_width="0px"
-            android:layout_height="match_parent"
-            android:layout_weight=".4"
-            android:background="@color/primary"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"
+            android:gravity="center"
+            android:text="@string/date"
+            android:id="@+id/dateLabel"
             android:textColor="@color/grey_200"
-            android:text="@string/start_time"
-            android:gravity="center"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-        <TextView
-            android:id="@+id/startTime"
-            android:layout_width="0px"
-            android:layout_height="match_parent"
-            android:layout_weight=".6"
-            android:background="@color/blue_grey_400"
-            android:text="12:00"
-            android:gravity="center"
-            android:textColor="@color/blue_300"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_margin="5dp"
-        android:layout_weight="0.1"
-        android:orientation="horizontal"
-        android:weightSum="10"
-        android:id="@+id/linearLayout1">
-
-        <TextView
-            android:layout_marginRight="5dp"
-            android:layout_width="0px"
-            android:layout_height="match_parent"
-            android:layout_weight="4"
             android:background="@color/primary"
-            android:textColor="@color/grey_200"
-            android:gravity="center"
-            android:text="@string/end_time"
+            android:layout_margin="5dp"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <TextView
-            android:id="@+id/endTime"
-            android:layout_width="0px"
-            android:layout_height="match_parent"
-            android:layout_weight="6"
-            android:text="12:00"
+            android:id="@+id/date"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"
+            android:layout_margin="5dp"
+            android:text="1.8.2017"
             android:gravity="center"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:background="@color/blue_grey_400"
             android:textColor="@color/blue_300" />
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"
+            android:gravity="center"
+            android:text="@string/title"
+            android:textColor="@color/grey_200"
+            android:background="@color/primary"
+            android:layout_margin="5dp"
+            android:id="@+id/titleLabel"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <EditText
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:inputType="text"
+            android:maxLines="1"
+            android:layout_height="wrap_content"
+            android:hint="@string/new_mitting"
+            android:textAlignment="center"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/blue_300" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"
+            android:gravity="center"
+            android:textColor="@color/grey_200"
+            android:background="@color/primary"
+            android:layout_margin="5dp"
+            android:text="People"
+            android:id="@+id/userLabel"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <TextView
+            android:id="@+id/users"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.3"
+            android:hint="Add users..."
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:gravity="start"
+            android:textColor="@color/blue_300" />
+
+
+        <Button
+            android:id="@+id/reserveButtin"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"
+            android:backgroundTint="@color/blue_grey_400"
+            android:fontFamily="sans-serif-condensed"
+            android:text="RESERVE"
+            android:textColor="@color/white"
+            android:typeface="normal" />
+
     </LinearLayout>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.1"
-        android:gravity="center"
-        android:text="@string/date"
-        android:id="@+id/dateLabel"
-        android:textColor="@color/grey_200"
-        android:background="@color/primary"
-        android:layout_margin="5dp"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <TextView
-        android:id="@+id/date"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.1"
-        android:layout_margin="5dp"
-        android:text="1.8.2017"
-        android:gravity="center"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:background="@color/blue_grey_400"
-        android:textColor="@color/blue_300" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.1"
-        android:gravity="center"
-        android:text="@string/title"
-        android:textColor="@color/grey_200"
-        android:background="@color/primary"
-        android:layout_margin="5dp"
-        android:id="@+id/titleLabel"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <EditText
-        android:id="@+id/title"
-        android:layout_width="match_parent"
-        android:inputType="text"
-        android:maxLines="1"
-        android:layout_height="wrap_content"
-        android:hint="@string/new_mitting"
-        android:textAlignment="center"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@color/blue_300" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.1"
-        android:gravity="center"
-        android:textColor="@color/grey_200"
-        android:background="@color/primary"
-        android:layout_margin="5dp"
-        android:text="People"
-        android:id="@+id/userLabel"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <EditText
-        android:id="@+id/users"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.3"
-        android:hint="Add users..."
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:gravity="start"
-        android:textColor="@color/blue_300" />
-
-
-    <Button
-        android:id="@+id/reserveButtin"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.1"
-        android:backgroundTint="@color/blue_grey_400"
-        android:fontFamily="sans-serif-condensed"
-        android:text="RESERVE"
-        android:textColor="@color/white"
-        android:typeface="normal" />
-
-</LinearLayout>
+</ScrollView>

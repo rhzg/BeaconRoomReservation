@@ -3,6 +3,7 @@ package de.iosb.fraunhofer.baeconroomreservation.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +28,7 @@ import de.iosb.fraunhofer.baeconroomreservation.rest.Communicator;
  *
  * @author Viseslav Sako
  */
-public class PickRoomFragment extends BaseListFragment implements SearchView.OnQueryTextListener
+public class PickRoomFragment extends ListFragment implements BaseListFragment, SearchView.OnQueryTextListener
 {
     private ArrayAdapter<EntityRepresentation> adapter;
     private List<EntityRepresentation> entityRepresentations;

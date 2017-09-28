@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">BaeconRoomReservation</string>
+    <string name="app_name">IOSB Reservation</string>
     <string name="text_search">Search</string>
     <string name="text_calendar">Calendar</string>
     <string name="text_nearby">Nearby</string>
@@ -23,5 +23,5 @@
     <string name="phone_number">Phone number:</string>
     <string name="email">Email:</string>
     <string name="occupied">OCCUPIED</string>
-    <string name="room_screen">Room screen</string>
+    <string name="room_screen">Room status</string>
 </resources>

@@ -1,181 +1,189 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollView"
     android:layout_width="match_parent"
-    android:weightSum="1.0"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:nestedScrollingEnabled="true"
+    android:fillViewport="true" >
 
     <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:weightSum="1.0"
-        android:layout_margin="5dp"
-        android:layout_weight="0.1"
-        android:layout_height="0dp">
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:weightSum="1.0"
+            android:layout_margin="5dp"
+            android:layout_weight="0.1"
+            android:layout_height="0dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_marginRight="5dp"
+                android:layout_weight=".4"
+                android:layout_height="match_parent"
+                android:background="@color/primary"
+                android:textColor="@color/grey_200"
+                android:gravity="center"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/start_time" />
+
+            <TextView
+                android:id="@+id/startDate"
+                android:layout_width="0dp"
+                android:layout_weight=".6"
+                android:layout_height="match_parent"
+                android:background="@color/grey_300"
+                android:gravity="center"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/start_time" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:weightSum="1.0"
+            android:layout_weight="0.1"
+            android:layout_margin="5dp"
+            android:layout_height="0dp">
+
+            <TextView
+                android:layout_marginRight="5dp"
+                android:layout_width="0dp"
+                android:layout_weight=".4"
+                android:background="@color/primary"
+                android:textColor="@color/grey_200"
+                android:gravity="center"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:layout_height="match_parent"
+                android:text="@string/end_time" />
+
+            <TextView
+                android:id="@+id/endDate"
+                android:layout_width="0dp"
+                android:layout_weight=".6"
+                android:layout_height="match_parent"
+                android:background="@color/grey_300"
+                android:gravity="center"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="TextView" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:weightSum="1.0"
+            android:layout_margin="5dp"
+            android:layout_weight="0.1"
+            android:layout_height="0dp">
+
+            <TextView
+                android:layout_weight=".5"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textColor="@color/grey_200"
+                android:background="@color/primary"
+                android:layout_marginRight="5dp"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/title" />
+
+            <TextView
+                android:id="@+id/desc"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".5"
+                android:background="@color/grey_300"
+                android:gravity="center"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="TextView" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:weightSum="1.0"
+            android:layout_margin="5dp"
+            android:layout_weight="0.1"
+            android:layout_height="0dp">
+
+            <TextView
+                android:layout_weight=".5"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textColor="@color/grey_200"
+                android:background="@color/primary"
+                android:layout_marginRight="5dp"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/location" />
+
+            <TextView
+                android:id="@+id/location"
+                android:layout_weight=".5"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:background="@color/grey_300"
+                android:gravity="center"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="TextView" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:weightSum="1.0"
+            android:layout_margin="5dp"
+            android:layout_weight="0.1"
+            android:layout_height="0dp">
+
+            <TextView
+                android:layout_weight=".5"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textColor="@color/grey_200"
+                android:background="@color/primary"
+                android:layout_marginRight="5dp"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/initializer" />
+
+            <TextView
+                android:id="@+id/initilaizer"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".5"
+                android:background="@color/grey_300"
+                android:gravity="center"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="TextView" />
+
+        </LinearLayout>
 
         <TextView
-            android:layout_width="0dp"
-            android:layout_marginRight="5dp"
+            android:layout_weight=".1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:textColor="@color/grey_200"
+            android:background="@color/primary"
+            android:layout_margin="5dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/people" />
+
+        <ListView
+            android:id="@+id/usersInTerm"
+            android:layout_width="match_parent"
+            android:nestedScrollingEnabled="true"
             android:layout_weight=".4"
-            android:layout_height="match_parent"
-            android:background="@color/primary"
-            android:textColor="@color/grey_200"
-            android:gravity="center"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/start_time" />
-
-        <TextView
-            android:id="@+id/startDate"
-            android:layout_width="0dp"
-            android:layout_weight=".6"
-            android:layout_height="match_parent"
             android:background="@color/grey_300"
-            android:gravity="center"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/start_time" />
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_margin="5dp"
+            android:layout_marginTop="0dp"
+            android:layout_height="0dp" />
 
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:weightSum="1.0"
-        android:layout_weight="0.1"
-        android:layout_margin="5dp"
-        android:layout_height="0dp">
-
-        <TextView
-            android:layout_marginRight="5dp"
-            android:layout_width="0dp"
-            android:layout_weight=".4"
-            android:background="@color/primary"
-            android:textColor="@color/grey_200"
-            android:gravity="center"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:layout_height="match_parent"
-            android:text="@string/end_time" />
-
-        <TextView
-            android:id="@+id/endDate"
-            android:layout_width="0dp"
-            android:layout_weight=".6"
-            android:layout_height="match_parent"
-            android:background="@color/grey_300"
-            android:gravity="center"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="TextView" />
-
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:weightSum="1.0"
-        android:layout_margin="5dp"
-        android:layout_weight="0.1"
-        android:layout_height="0dp">
-
-        <TextView
-            android:layout_weight=".5"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:textColor="@color/grey_200"
-            android:background="@color/primary"
-            android:layout_marginRight="5dp"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/title" />
-
-        <TextView
-            android:id="@+id/desc"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight=".5"
-            android:background="@color/grey_300"
-            android:gravity="center"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="TextView" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:weightSum="1.0"
-        android:layout_margin="5dp"
-        android:layout_weight="0.1"
-        android:layout_height="0dp">
-
-        <TextView
-            android:layout_weight=".5"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:textColor="@color/grey_200"
-            android:background="@color/primary"
-            android:layout_marginRight="5dp"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/location" />
-
-        <TextView
-            android:id="@+id/location"
-            android:layout_weight=".5"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:background="@color/grey_300"
-            android:gravity="center"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="TextView" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:weightSum="1.0"
-        android:layout_margin="5dp"
-        android:layout_weight="0.1"
-        android:layout_height="0dp">
-
-        <TextView
-            android:layout_weight=".5"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:textColor="@color/grey_200"
-            android:background="@color/primary"
-            android:layout_marginRight="5dp"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/initializer" />
-
-        <TextView
-            android:id="@+id/initilaizer"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight=".5"
-            android:background="@color/grey_300"
-            android:gravity="center"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="TextView" />
-
-    </LinearLayout>
-
-    <TextView
-        android:layout_weight=".1"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:gravity="center"
-        android:textColor="@color/grey_200"
-        android:background="@color/primary"
-        android:layout_margin="5dp"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/people" />
-
-    <ListView
-        android:id="@+id/usersInTerm"
-        android:layout_width="match_parent"
-        android:layout_weight=".4"
-        android:background="@color/grey_300"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_margin="5dp"
-        android:layout_marginTop="0dp"
-        android:layout_height="0dp" />
-
-</LinearLayout>
+</ScrollView>

@@ -41,4 +41,23 @@ public class EntityRepresentation implements Serializable
     public String toString() {
         return name;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        EntityRepresentation that = (EntityRepresentation) o;
+
+        if (name != null ? !name.equals(that.name) : that.name != null) return false;
+        return userID != null ? userID.equals(that.userID) : that.userID == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name != null ? name.hashCode() : 0;
+        result = 31 * result + (userID != null ? userID.hashCode() : 0);
+        return result;
+    }
 }

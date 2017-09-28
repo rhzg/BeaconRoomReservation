@@ -9,8 +9,11 @@
             android:title="@string/action_main" />
         <item
             android:id="@+id/nav_admin"
-            android:icon="@drawable/ic_menu_help"
+            android:icon="@drawable/ic_action_name"
             android:visible="false"
+            android:fillColor="#FF000000"
+            android:viewportWidth="24.0"
+            android:viewportHeight="24.0"
             android:title="@string/room_screen" />
     </group>
 
@@ -20,9 +23,6 @@
             android:id="@+id/nav_sign_out"
             android:icon="@drawable/ic_menu_sign_out"
             android:title="@string/signout" />
-        <item
-            android:id="@+id/nav_about"
-            android:icon="@drawable/ic_menu_info"
-            android:title="@string/action_about" />
+
     </group>
 </menu>
