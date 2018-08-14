@@ -79,7 +79,11 @@ public class Communicator
     private static APIInterface service;
     private static APIInterface loginService;
     //URL root url for making calls
-    private static final String SERVER_URL = "http://192.168.42.211";
+//    private static final String SERVER_URL = "http://192.168.42.211";
+//    private static final String SERVER_URL = "http://192.44.1.121";
+//    private static final String SERVER_URL = "http://10.1.9.185:8080";
+    private static final String SERVER_URL = "http://smartcampus.iosb.fraunhofer.de:80";
+//    private static final String SERVER_URL = "http://10.0.2.2:8080";
 
     /**
      * Initialize the Retrofit service for making network calls.
