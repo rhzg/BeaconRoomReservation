@@ -15,6 +15,7 @@ import com.google.gson.GsonBuilder;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import org.altbeacon.beacon.Beacon;
+import org.altbeacon.beacon.Identifier;
 
 import java.io.IOException;
 import java.security.MessageDigest;
@@ -81,8 +82,9 @@ public class Communicator
     //URL root url for making calls
 //    private static final String SERVER_URL = "http://192.168.42.211";
 //    private static final String SERVER_URL = "http://192.44.1.121";
-//    private static final String SERVER_URL = "http://10.1.9.185:8080";
-    private static final String SERVER_URL = "http://smartcampus.iosb.fraunhofer.de:80";
+    private static final String SERVER_URL = "http://10.1.9.185:8080";
+//    private static final String SERVER_URL = "http://192.168.42.28:8080";   // Tethering
+//    private static final String SERVER_URL = "http://smartcampus.iosb.fraunhofer.de:80";
 //    private static final String SERVER_URL = "http://10.0.2.2:8080";
 
     /**
@@ -189,8 +191,9 @@ public class Communicator
 
         for(Beacon beacon:beacons)
         {
-            beaconMap.put(beacon.getBluetoothName(), beacon);
-            nearbyRooms.add(new NearbyRoom(beacon.getDistance() ,beacon.getBluetoothName()));
+            String beaconKey = beacon.getId1().toString() + ":" + beacon.getId2().toString() + ":" + beacon.getId3().toString();
+            beaconMap.put(beaconKey, beacon);
+            nearbyRooms.add(new NearbyRoom(beacon.getDistance(), beacon.getBluetoothName(), beacon.getId1().toString(), beacon.getId2().toString(), beacon.getId3().toString()));
         }
 
         Call<List<RoomOverview>> call = service.postNerby(new NearbyRequest(nearbyRooms));
@@ -492,7 +495,7 @@ public class Communicator
 
         for(Beacon beacon:beacons)
         {
-            beaconMap.put(beacon.getBluetoothName(), beacon);
+            beaconMap.put(beacon.getId1().toString() + ":" + beacon.getId2().toString() + ":" + beacon.getId3().toString(), beacon);
         }
         Call<List<RoomOverview>> call = service.getFavorite();
 
