@@ -1,5 +1,14 @@
 apply plugin: 'com.android.application'
 
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.0.5.RELEASE")
+    }
+}
+
 android {
     compileSdkVersion 25
     buildToolsVersion "26.0.1"
@@ -19,7 +28,23 @@ android {
     }
 }
 
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+// repositories {
+//    mavenCentral()
+//}
+
 dependencies {
+//    compile("org.springframework.boot:spring-boot-starter-web")
+//    testCompile("org.springframework.boot:spring-boot-starter-test")
+//    testCompile("org.springframework.security:spring-security-test")
+
+    compile("org.springframework.boot:spring-boot-starter-data-rest")
+    compile('org.springframework.boot:spring-boot-starter-data-jpa')
+    compile('org.springframework.boot:spring-boot-starter-web')
+    compile 'org.springframework.security:spring-security-acl:4.2.9.RELEASE'
+
     compile 'com.jakewharton:butterknife:8.7.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.7.0'
     compile fileTree(dir: 'libs', include: ['*.jar'])
