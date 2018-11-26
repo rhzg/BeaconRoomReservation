@@ -2,25 +2,27 @@
 package de.iosb.fraunhofer.baeconroomreservation.activity;
 
  import android.accounts.Account;
- import android.accounts.AccountAuthenticatorActivity;
- import android.accounts.AccountManager;
- import android.app.ProgressDialog;
- import android.os.AsyncTask;
- import android.os.Bundle;
- import android.util.Log;
- import android.content.Intent;
- import android.view.View;
- import android.widget.Button;
- import android.widget.EditText;
- import android.widget.TextView;
- import android.widget.Toast;
+import android.accounts.AccountAuthenticatorActivity;
+import android.accounts.AccountManager;
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
- import butterknife.ButterKnife;
- import butterknife.BindView ;
- import de.iosb.fraunhofer.baeconroomreservation.Constants;
- import de.iosb.fraunhofer.baeconroomreservation.R;
- import de.iosb.fraunhofer.baeconroomreservation.entity.LoginResponse;
- import de.iosb.fraunhofer.baeconroomreservation.rest.Communicator;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import de.iosb.fraunhofer.baeconroomreservation.Constants;
+import de.iosb.fraunhofer.baeconroomreservation.R;
+import de.iosb.fraunhofer.baeconroomreservation.entity.LoginResponse;
+import de.iosb.fraunhofer.baeconroomreservation.rest.Communicator;
 
 /**
  * This is a application which is used for logging in. I
@@ -80,6 +82,11 @@ public class LoginActivity extends AccountAuthenticatorActivity
         _loginButton.setEnabled(false);
         email = _emailText.getText().toString();
         password = _passwordText.getText().toString();
+
+        BCrypt hashGenerator = new BCrypt();
+        String hashedPass = hashGenerator.hashpw(password, BCrypt.gensalt());
+
+        password = hashedPass;
 
         new MyTask().execute();
     }
